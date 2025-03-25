@@ -1,14 +1,14 @@
 ---
 title: "Traitement et analyse de l’information spatialisée avec R"
-subtitle: "Séminaire TAIS (EHESS), 23 mai 2024"
-author: "Hugues Pecout & Timothée Giraud"
-institute: UMR Géographie-Cités & UAR RIATE 
+subtitle: "Master I Géomatique (USSEIN), 26 mars 2024"
+author: "Hugues Pecout"
+institute: UMR8504 Géographie-Cités 
 img : img/cnrs.png
 title-slide-attributes:
-  data-background-image: img/ehess.png
-  data-background-size: 5%
+  data-background-image: img/USSEIN.png
+  data-background-size: 8%
   data-background-position: 2% 2%
-footer: "Séminaire TAIS - EHESS, 23 mai 2024"
+footer: "Master I Géomatique (USSEIN), 26 mars 2024"
   
 format: 
   revealjs:
@@ -35,7 +35,7 @@ bibliography: references.bib
 date: 23 05 2024
 date-format: "D MMM YYYY"
 lang: fr
-logo: "img/ehess.png"
+logo: "img/USSEIN.png"
 csl: "universite-de-montreal-apa.csl"
 css: style.css
 knitr:
@@ -103,6 +103,7 @@ statistique**.
 R est aujourd'hui un **langage très polyvalent**, qui propose des
 fonctionnalités qui vont au delà de l'analyse statistique... **Que
 propose R pour la manipulation de données spatiales ?**
+
 
 ## Croissance des fonctionnalités
 
@@ -262,68 +263,6 @@ Envisager la conteneurisation [@nust2021].
 ::: {.column .center width="60%"}
 ![@pebesma2023 [chap. 1.7]](img/sf_deps.png)
 :::
-:::
-
-# Rappel (?) sur les données spatiales
-
-## Les données RASTER
-
-::: columns
-::: {.column width="49%"}
-\
-
-C'est une **image matricielle localisée dans l'espace**.
-
-L'information géographique est alors stockée dans des pixels.
-
-Chaque pixel, **défini par une résolution**, possède des valeurs qui
-peuvent être traitées et cartographiées.
-:::
-
-::: {.column width="51%"}
-![](img/raster.png)
-:::
-:::
-
-## Les données vectorielles
-
-::: columns
-::: {.column width="49%"}
-\
-
-Il s'agit d'objets géométriques de type **points**, **lignes** ou
-**polygones**.
-
-Ces objets vectoriels ne **pixellisent pas**.
-
-Chaque objet est défini par **un identifiant unique**.
-:::
-
-::: {.column width="49%"}
-![](img/vecteur.png)
-:::
-:::
-
-## Raster vs Vecteur {.scrollable}
-
-<center>
-![@lambert2016](img/raster_vecteur.png)
-</center>
-
-
-
-:::columns
-
-::: {.column .center width="50%"}
-**Raster**
-![](img/Capture1.PNG)
-:::
-
-::: {.column .center width="50%"}
-**Vecteur**
-![](img/Capture2.PNG){width="91%"}
-:::
-
 :::
 
 
@@ -509,9 +448,11 @@ mf_map(mtq_2154)
 # En R-base
 mtq_sel <- mtq[mtq$POP < 20000, ]
 
+mtq_sel <- subset(mtq, POP < 20000)
+
 # En Tidyverse
 library(dplyr)
-mtq_sel <- filter(mtq, POP > 20000)
+mtq_sel <- filter(mtq, POP < 20000)
 ```
 :::
 
@@ -746,7 +687,8 @@ mtq$perimetre <- st_perimeter(mtq)
 #| nomar: true
 #| cache: false
 DT::datatable(mtq[,c(3,9,10)],
-  options = list(pageLength = 3, dom = 'tip'), rownames = FALSE)
+  options = list(pageLength = 3, dom = 'tip'), rownames = FALSE) %>%
+  DT::formatStyle(columns = c(1, 2, 3, 4, 5), fontSize = '70%')
 ```
 :::
 
@@ -1758,9 +1700,10 @@ Deck.gl
 ```{r mapview_true}
 #| cache: false
 #| include: false
+#| eval: false
 library(mapview)
 x <- mapview(mtq)
-dir.create("html", showWarnings = F)
+dir.create("html", showWarnings = FALSE)
 mapshot(x, url = "html/map.html")
 ```
 
@@ -1797,7 +1740,7 @@ library(tmap)
 tmap_mode("view")
 
 tm_shape(mtq) +
-tm_polygons(col="STATUS")
+tm_polygons(fill = "STATUS")
 
 ```
 
@@ -1816,7 +1759,7 @@ library(tmap)
 tmap_mode("view")
 
 tm_shape(mtq) +
-tm_polygons(col="STATUS")
+tm_polygons(fill = "STATUS")
 
 ```
 
@@ -2132,7 +2075,8 @@ EHESS
 EHESS_sf <- st_as_sf(EHESS, 
                      coords = c("long", "lat"), 
                      crs = "EPSG:4326") 
-  
+
+library(mapview)  
 mapview(EHESS_sf)
 
 ```

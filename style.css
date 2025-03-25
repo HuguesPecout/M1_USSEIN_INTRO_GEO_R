@@ -86,7 +86,7 @@ font-size: 90%;
 }
 
 .smaller{
-  font-size:45px;
+  font-size:180%;
 }
 
 .quatrevingtdix{
@@ -97,7 +97,7 @@ font-size: 90%;
   font-size: 70%;
 }
 
-.soixante{
+.soixante{ package sf
   font-size: 60%;
 }
 
