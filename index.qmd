@@ -50,6 +50,25 @@ editor:
     wrap: 72
 ---
 
+## Hugues Pecout
+
+Ingénieur en science de l'information géographique au CNRS depuis 2012
+
+A l'UMR Géographie-cités depusi 2022. Aide les chercheurs en Géographie pour le traitement de l'information géographique
+
+Tout types de données
+
+Formation Géomatique classique. Utilisation d'outils SIG clic boutton
+
+Spécialisation dans l'utilisation de R 
+
+
+
+## Pourquoi R
+
+## R vs Python
+
+
 # Le langage R et l'information spatiale
 
 ## Historique du langage R
