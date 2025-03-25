@@ -15,11 +15,11 @@ format:
     template-partials:
       - title-slide.html
     fig-align: center
-    smaller: true
+    smaller: TRUE
     theme : [custom.scss]
     show-slide-number: all
-    slide-number: true
-    code-line-numbers: false
+    slide-number: TRUE
+    code-line-numbers: FALSE
     chalkboard: TRUE
     transition: fade
     transition-speed: fast
@@ -160,13 +160,13 @@ tools <- length(lsf.str("package:tools"))
 Nb_prim_2 <- grid + splines + stats4 + tcltk + tools
 
 
-Nb_prim <- Nb_prim  + Nb_prim_2
+Nb_prim <- Nb_prim  +  Nb_prim_2
 
 ```
 
 \
 
-```{r warning=FALSE, message=FALSE, eval=TRUE, include= TRUE, echo=FALSE, fig.width=20, fig.height=10}
+```{r warning=FALSE, message=FALSE, eval=TRUE, include= TRUE, echo=FALSE, fig.width=10}
 
 library(ggplot2) 
 
@@ -482,7 +482,7 @@ mtq_centroid <- st_centroid(mtq)
 
 \
 
-Affichage du résultat :
+Affichage :
 
 ```{r sf_centro2}
 #| warning: false
@@ -504,7 +504,7 @@ mtq_union <- st_union(mtq)
 
 \
 
-Affichage du résultat :
+Affichage :
 
 ```{r sf_agg2}
 #| nomar: true
@@ -523,7 +523,7 @@ mtq_buffer <- st_buffer(x = mtq_union, dist = 5000)
 
 \
 
-Affichage du résultat :
+Affichage :
 
 ```{r sf_buff2}
 #| nomar: true
@@ -750,23 +750,21 @@ plot(st_geometry(mtq_grid50), add = TRUE)
 Compter des points dans des polygones
 
 ```{r sf_count_pts}
+#| warning: false
+#| nomar: true
+#| fig-height: 13
+
 inter <- st_intersects(x = mtq_grid50,
                        y = mtq_centroid, 
                        sparse = TRUE)
 
 mtq_grid50$nb_centroid <- lengths(inter)
-```
 
-\
-
-```{r sf_grid2}
-#| warning: false
-#| nomar: true
-#| fig-height: 13
-#| echo: false
-
+# Affichage
 plot(mtq_grid50["nb_centroid"])
 ```
+
+
 :::
 :::
 
@@ -1855,9 +1853,9 @@ my_pal <- c("red4", "red", "orange", "yellow", "#FFFFC8")
 <center>
 Liste des couleurs implementées : [**http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf**](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
 
-```{=html}
-<iframe width="800" height="700" src="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" title="Quarto Documentation"></iframe>
-```
+<!-- ```{=html} -->
+<!-- <iframe width="800" height="700" src="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" title="Quarto Documentation"></iframe> -->
+<!-- ``` -->
 
 </center>
 
@@ -2279,10 +2277,15 @@ français](https://r.geocompx.org/fr/)
 ::: {.column width="28%"}
 ![](img/logo_rzine.png){width="90%"}
 
-{{< fa solid link >}} [https://rzine.fr/](https://rzine.fr/)
+Revue d'article de méthodes mises en application avec R
 
--   Référencement de documents et supports divers.
--   La collection Rzine : publications open source, *open peer review*.
+\
+
+{{< fa solid link >}} [**rzine.fr**](https://rzine.fr/)
+
+{{< fa solid link >}} [**Liste de ressources**](https://rzine.gitpages.huma-num.fr/site/ressources/)
+
+
 :::
 
 ::: {.column width="2%"}
@@ -2352,13 +2355,13 @@ Condorcet.
 \
 
 :::{.center .bigbis2}
-[**https://github.com/HuguesPecout/GeoExo_TAIS**](https://github.com/HuguesPecout/GeoExo_TAIS)
+[**https://github.com/HuguesPecout/DEMO_GEO_R**](https://github.com/HuguesPecout/DEMO_GEO_R)
 
 \
 
 [![](img/project.png){width="20%"}]()
 
-**Téléchargez ce** [**projet Rstudio**](https://github.com/HuguesPecout/GeoExo_TAIS/archive/refs/heads/main.zip)
+**Téléchargez ce** [**projet Rstudio**](https://github.com/HuguesPecout/DEMO_GEO_R/archive/refs/heads/main.zip)
 :::   
 
 
@@ -2371,11 +2374,11 @@ Condorcet.
 \
 
 ::: {style="font-size: 1.5em; text-align: center"}
-{{< fa display >}} [Diaporama en ligne](https://tais-ehess-hpecout-bb467c23dd2ecba666035579bc786d99e7bb2c2b3553.gitpages.huma-num.fr/#/title-slide)
+{{< fa display >}} [Diaporama en ligne](https://huguespecout.github.io/M1_USSEIN_INTRO_GEO_R)
 
 \
 
-{{< fa code >}} [Code source](https://gitlab.huma-num.fr/hpecout/tais_ehess)
+{{< fa code >}} [Code source](https://github.com/HuguesPecout/M1_USSEIN_INTRO_GEO_R)
 
 \
 
@@ -2387,7 +2390,7 @@ Condorcet.
 
 ::: footer
 
-<img src="img/geographie.png" width="80" style="margin-right:50px"/><img src="img/cnrs.png" width="80" style="margin-right:50px"/><img src="img/riate.png" width="150"/>
+<img src="img/geographie.png" width="80" style="margin-right:50px"/><img src="img/cnrs.png" width="75"/>
 :::
 
 ## Bibliographie {.scrollable}
