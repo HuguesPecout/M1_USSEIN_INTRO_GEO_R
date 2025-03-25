@@ -1,0 +1,2430 @@
+---
+title: "Traitement et analyse de l’information spatialisée avec R"
+subtitle: "Séminaire TAIS (EHESS), 23 mai 2024"
+author: "Hugues Pecout & Timothée Giraud"
+institute: UMR Géographie-Cités & UAR RIATE 
+img : img/cnrs.png
+title-slide-attributes:
+  data-background-image: img/ehess.png
+  data-background-size: 5%
+  data-background-position: 2% 2%
+footer: "Séminaire TAIS - EHESS, 23 mai 2024"
+  
+format: 
+  revealjs:
+    template-partials:
+      - title-slide.html
+    fig-align: center
+    smaller: true
+    theme : [custom.scss]
+    show-slide-number: all
+    slide-number: true
+    code-line-numbers: false
+    chalkboard: TRUE
+    transition: fade
+    transition-speed: fast
+    menu: TRUE
+
+execute:
+  echo: true
+  output: true
+  warning: true
+  include: true
+  cache: true
+bibliography: references.bib
+date: 23 05 2024
+date-format: "D MMM YYYY"
+lang: fr
+logo: "img/ehess.png"
+csl: "universite-de-montreal-apa.csl"
+css: style.css
+knitr:
+  opts_chunk: 
+    fig.path: "figs/"
+    cache.path: "cache/"
+    fig.align: "center"
+    comment: "" 
+highlight-style: kate
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+# Le langage R et l'information spatiale
+
+## Historique du langage R
+
+**R se base sur le langage de programmation S**, créé en 1988.\
+L'objectif était de **créer le meilleur environnement d'analyse
+statistique**.
+
+::: soixantequinze
+-   **1992**: **R. Gentleman** et **R. Ihaka démarrent le
+    développement** (projet de recherche)
+-   1993: **Première version binaire** de R publiée sur Statlib
+-   **1995**: **R est distribué en tant que logiciel open source, sous
+    licence GPL2**
+-   1997: Création du *R core group*. Création du CRAN (par K. Jornik
+    et F. Leisch)
+-   1999: Création du site web de R (*r-project.org*) . Première réunion
+    physique de la *R core team*
+-   **2000**: **R 1.0.0** est publié. John Chambers (créateur du langage
+    S), rejoint la *R Core team*
+-   2001: Création de *R News* (qui deviendra *R Journal*)
+-   **2003**: **Création de la** ***R Foundation***
+-   2004: Première conférence *UseR!* (Vienne)
+-   **2004**: **R 2.0.0** est publié
+-   2009: Première édition du *R Journal*
+-   **2013**: **R 3.0.0** est plublié
+-   **2015**: **Création du** ***R Consortium*** (avec la participation
+    de la *R Foundation*)
+-   **2020**: **R 4.0.0** est plublié\
+:::
+
+R est aujourd'hui un **langage très polyvalent**, qui propose des
+fonctionnalités qui vont au delà de l'analyse statistique... **Que
+propose R pour la manipulation de données spatiales ?**
+
+## Croissance des fonctionnalités
+
+```{r warning=FALSE, message=FALSE, eval=TRUE, include= TRUE, echo=FALSE}
+
+library('rvest')
+url <- "https://cran.r-project.org/web/packages/available_packages_by_date.html"
+#Reading the HTML code from the website
+webpage <- read_html(url)
+td <- webpage %>%  html_nodes("td")
+rank_data <- html_text(td)
+
+vec <- c(NULL)
+for (t in seq(1,length(rank_data),3))  {
+vec <-  c(vec, rank_data[t])
+}
+
+library(stringr)
+vec <- str_trim(vec)
+test <- as.data.frame(vec)
+test$nb <- 1
+test$date <- as.Date(test$vec)
+test <- test[,c(3:2)]
+
+library(plyr)
+test2 <-  ddply(test, .(date), summarize, nb=sum(nb))
+test2$cum <- cumsum(test2$nb)
+test <- test2[,c(1:3)]
+
+nb_function_base <- length(lsf.str("package:base"))
+
+# Nombre de fonctions primitives
+base <- length(lsf.str("package:base")) 
+stats <- length(lsf.str("package:stats")) 
+utils <- length(lsf.str("package:utils")) 
+methods <- length(lsf.str("package:methods")) 
+grDevices <- length(lsf.str("package:grDevices")) 
+graphics <- length(lsf.str("package:graphics")) 
+datasets <- length(lsf.str("package:datasets")) 
+
+Nb_prim <- base + utils + stats + methods + grDevices + graphics + datasets 
+
+library(grid)
+library(splines)
+library(stats4)
+library(tcltk)
+library(tools)
+grid <- length(lsf.str("package:grid")) 
+splines <- length(lsf.str("package:splines")) 
+stats4 <- length(lsf.str("package:stats4")) 
+tcltk <- length(lsf.str("package:tcltk")) 
+tools <- length(lsf.str("package:tools")) 
+
+Nb_prim_2 <- grid + splines + stats4 + tcltk + tools
+
+
+Nb_prim <- Nb_prim  + Nb_prim_2
+
+```
+
+\
+
+```{r warning=FALSE, message=FALSE, eval=TRUE, include= TRUE, echo=FALSE, fig.width=20, fig.height=10}
+
+library(ggplot2) 
+
+p <- ggplot(test2) + 
+geom_line(aes(date, cum), lwd = 1, col = '#20b9b1') + 
+xlab("") + 
+ylab("") + 
+scale_x_date( date_minor_breaks = "1 month", date_labels = "%Y", breaks = as.Date( c('2005-01-01', 
+                                                                                     '2006-01-01', 
+                                                                                     '2007-01-01', 
+                                                                                     '2008-01-01', 
+                                                                                     '2009-01-01', 
+                                                                                     '2010-01-01', 
+                                                                                     '2011-01-01',
+                                                                                     '2012-01-01',
+                                                                                     '2013-01-01', 
+                                                                                     '2014-01-01', 
+                                                                                     '2015-01-01', 
+                                                                                     '2016-01-01', 
+                                                                                     '2017-01-01', 
+                                                                                     '2018-01-01', 
+                                                                                     '2019-01-01', 
+                                                                                     '2020-01-01', 
+                                                                                     '2021-01-01',
+                                                                                     '2022-01-01',
+                                                                                     
+'2023-01-01', '2024-01-01'))) + 
+annotate(geom = "text", x = as.Date('2018-08-23'), y = 15000, label = paste0( max(test2$cum), ' packages \n (', format(Sys.time(), '%d %b %Y'), ")"), color ="#ff5151", size = 5.5) + 
+geom_point(aes(x = max(date), y = max(cum)), color = "#ff5151", size = 4) + 
+theme(axis.text = element_text(size = 10, colour ="grey50"), 
+      panel.background = element_rect(fill = "transparent"), 
+      plot.background = element_rect(fill = "transparent", color = NA), 
+      panel.grid.major = element_line(colour = "grey80"), 
+      panel.grid.minor = element_line(colour = "grey80"), 
+      legend.background = element_rect(fill = "transparent"), 
+      legend.box.background = element_rect(fill = "transparent")) 
+
+ggsave(p, filename = "img/graph.png", bg = "transparent", dpi = 300) 
+
+```
+
+::: {.bigbis .center}
+**Nombre de packages disponibles sur le
+[CRAN](https://cran.r-project.org/)**
+:::
+
+
+![](img/graph.png)
+
+
+## R et l'information géographique
+
+\
+
+-   avant 2003 : `spatial`, `sgeostat`, `splancs`, `akima`, `geoR`,
+    `spatstat`, `spdep`, `maptools`.\
+-   2003 : `rgdal` [@R-rgdal], interface entre R et GDAL/PROJ4\
+-   2005 : `sp` [@R-sf], classes et méthodes dédiées aux objets
+    spatiaux, **adoption rapide**
+-   2008 : support de `sp` par `ggplot2`
+-   2010 : `rgeos` [@R-rgeos], interface entre R et GEOS.\
+-   2010 : `raster` [@R-raster], support des données raster
+-   **2016 :** <u>`sf`</u> [@R-sf], remplace `sp`, `rgdal` et `rgeos`
+-   2018 : <u>`stars`</u> [@pebesma2023], remplace `raster`
+-   **2020 :** <u>`terra`</u> [@R-terra], remplace aussi `raster`
+
+\
+
+::: {.bigbis .center}
+Aujourd'hui, **R est en capacité de se substituer aux logiciels SIG**
+:::
+
+
+## Le socle de l'écosystème
+
+\
+
+::: columns
+::: {.column width="40%"}
+Des bibliothèques géographiques largement utilisées :
+
+-   **GDAL** - Geospatial Data Abstraction Library [@GDAL]
+-   **PROJ** - Coordinate Transformation Software [@PROJ]
+-   **GEOS** - Geometry Engine - Open Source [@GEOS]
+
+::: {.callout-caution title="Il s'agit de dépendances externes"}
+-   Installation
+-   Reproductibilité
+
+Envisager la conteneurisation [@nust2021].
+:::
+:::
+
+::: {.column .center width="60%"}
+![@pebesma2023 [chap. 1.7]](img/sf_deps.png)
+:::
+:::
+
+# Rappel (?) sur les données spatiales
+
+## Les données RASTER
+
+::: columns
+::: {.column width="49%"}
+\
+
+C'est une **image matricielle localisée dans l'espace**.
+
+L'information géographique est alors stockée dans des pixels.
+
+Chaque pixel, **défini par une résolution**, possède des valeurs qui
+peuvent être traitées et cartographiées.
+:::
+
+::: {.column width="51%"}
+![](img/raster.png)
+:::
+:::
+
+## Les données vectorielles
+
+::: columns
+::: {.column width="49%"}
+\
+
+Il s'agit d'objets géométriques de type **points**, **lignes** ou
+**polygones**.
+
+Ces objets vectoriels ne **pixellisent pas**.
+
+Chaque objet est défini par **un identifiant unique**.
+:::
+
+::: {.column width="49%"}
+![](img/vecteur.png)
+:::
+:::
+
+## Raster vs Vecteur {.scrollable}
+
+<center>
+![@lambert2016](img/raster_vecteur.png)
+</center>
+
+
+
+:::columns
+
+::: {.column .center width="50%"}
+**Raster**
+![](img/Capture1.PNG)
+:::
+
+::: {.column .center width="50%"}
+**Vecteur**
+![](img/Capture2.PNG){width="91%"}
+:::
+
+:::
+
+
+
+
+# Manipulation de données vectorielles avec R
+
+## Le package `sf` {.nostretch}
+
+::: columns
+::: {.column width="75%"}
+Publié fin 2016 par Edzer Pebesma.
+
+![© Allison Horst, 2018](img/sf_nice.jpg)
+:::
+
+::: {.column width="25%"}
+![](img/logo_sf.gif)
+
+::: txt2
+**Principales fonctionnalités**
+
+-   import / export
+-   affichage
+-   géotraitements
+-   support des données non projetées (sur le globe)
+-   utilisation du standard [*simple
+    feature*](https://en.wikipedia.org/wiki/Simple_Features)
+-   compatibilité avec le *pipe*\
+    (`|>` ou `%>%`)
+-   compatibilité avec les opérateurs du `tidyverse`.
+:::
+:::
+:::
+
+```{r knit_init}
+#| include: false
+#| cache: false
+knitr::knit_hooks$set(nomar = function(before, options, envir){
+  if (before){
+    par(mar=c(0,0,0,0))
+  } 
+})
+```
+
+## L'objet `sf` {.nostretch}
+
+\
+
+![[Simple Features for R
+Vignette](https://r-spatial.github.io/sf/articles/sf1.html)](img/sf.png){width="75%"}
+
+\
+
+**Les objets `sf` sont des `data.frame` dont l'une des colonnes contient
+des géométries.** Format très pratique, les données et les géométries
+sont intrinsèquement liées dans un même objet.
+
+## Import de données vectorielles
+
+\
+
+```{r sf_import}
+#| eval: true
+#| cache: false
+library(sf)
+```
+
+\
+
+```{r sf_import2}
+#| eval: true
+#| cache: false
+mtq <- st_read(dsn = "data/mtq.gpkg", layer = "mtq")
+```
+
+</br>
+
+::: {.bigone .center}
+**Les principaux formats de fichier sont pris en charge.**
+:::
+
+## Affichage des objets `sf`
+
+\
+
+```{r sf_plot_multi}
+#| fig-height: 2
+#| nomar: true
+
+plot(mtq)
+```
+
+```{r sf_plot}
+#| fig-height: 2
+#| nomar: true
+plot(st_geometry(mtq))
+```
+
+## Manipulation et géotraitements avec `sf`
+
+::: bigone
+Le package **`sf` propose toutes les fonctions classiques de
+manipulation de données géographiques et de géotraitements** proposées
+par les SIG. Exemples :
+:::
+
+-   Changement projection : `st_transform()`
+-   Séléction attributaire : Similaire aux data.frame
+-   Séléction spatiale : `st_filter()`
+-   Jointure spatiale : `st_join()`
+-   Calucl surface : `st_area()`
+-   Calucl distance : `st_distance()`
+-   Extraction centroïde : `st_centroid()`
+-   Agrégation de géométrie : `st_union()`
+-   Création de zone tampon : `st_buffer()`
+-   Découpage d'une géométrie par une autre : `st_intersection()`
+-   Création d'une grille régulière : `st_make_grid()`
+-   ...
+
+::: center
+→ [Site web du package `sf`](https://r-spatial.github.io/sf/)
+:::
+
+## Gestion de la projection {.scrollable}
+
+\
+
+```{r sf_proj1}
+#| warning: false
+#| nomar: true
+st_crs(mtq)
+```
+
+\
+
+**Transformation de la couche en projection** [***RGF93 v1 /
+Lambert-93***](https://epsg.io/2154) :
+
+```{r sf_proj2}
+#| warning: false
+#| nomar: true
+mtq_2154 <- st_transform(mtq, crs = "EPSG:2154")
+```
+
+\
+
+::: columns
+::: {.column .center width="50%"}
+[**mtq** (WGS 84 / UTM zone 20N)]{.colour}
+
+```{r sf_proj3}
+#| warning: false
+#| nomar: true
+#| echo: FALSE
+library(mapsf)
+mf_map(mtq)
+```
+:::
+
+::: {.column .center width="50%"}
+[**mtq_2154** (RGF93 v1 / Lambert-93)]{.colour}
+
+```{r sf_proj4}
+#| warning: false
+#| nomar: true
+#| echo: FALSE
+mf_map(mtq_2154)
+```
+:::
+:::
+
+## Séléction par attribut
+
+\
+
+::: columns
+::: {.column .center width="45%"}
+```{r sf_select}
+#| warning: false
+#| nomar: true
+
+# En R-base
+mtq_sel <- mtq[mtq$POP < 20000, ]
+
+# En Tidyverse
+library(dplyr)
+mtq_sel <- filter(mtq, POP > 20000)
+```
+:::
+
+::: {.column .center width="5%"}
+:::
+
+::: {.column .center width="50%"}
+```{r sf_select2}
+#| warning: false
+#| nomar: true
+#| fig-height: 10
+plot(st_geometry(mtq))
+plot(st_geometry(mtq_sel), col = "red", add = TRUE)
+```
+:::
+:::
+
+## Extraction centroïdes
+
+\
+
+```{r sf_centro}
+#| warning: false
+#| nomar: true
+mtq_centroid <- st_centroid(mtq)
+```
+
+\
+
+Affichage du résultat :
+
+```{r sf_centro2}
+#| warning: false
+#| nomar: true
+
+
+plot(st_geometry(mtq))
+plot(st_geometry(mtq_centroid), col = "red", pch = 20, add = TRUE)
+```
+
+## Agrégation de géométrie
+
+\
+
+```{r sf_agg}
+#| nomar: true
+mtq_union <- st_union(mtq)
+```
+
+\
+
+Affichage du résultat :
+
+```{r sf_agg2}
+#| nomar: true
+plot(st_geometry(mtq))
+plot(st_geometry(mtq_union), lwd = 2, border = "red", add = TRUE)
+```
+
+## Zone tampon
+
+\
+
+```{r sf_buff}
+#| nomar: true
+mtq_buffer <- st_buffer(x = mtq_union, dist = 5000)
+```
+
+\
+
+Affichage du résultat :
+
+```{r sf_buff2}
+#| nomar: true
+plot(st_geometry(mtq_buffer), lwd = 2, border = "red")
+plot(st_geometry(mtq_union), add = TRUE)
+
+
+```
+
+## Découpage d'une géométrie
+
+\
+
+::: columns
+::: {.column width="50%"}
+```{r sf_interse0}
+#| echo: false
+#| fig-height: 10
+#| nomar: true
+m <- rbind(c(700015,1624212), c(700015,1641586), 
+           c(719127,1641586), c(719127,1624212), 
+           c(700015,1624212))
+p <- st_sf(st_sfc(st_polygon(list(m))), crs = st_crs(mtq))
+```
+
+```{r sf_intersect2}
+#| warning: false
+#| nomar: true
+mtq_z <- st_intersection(x = mtq, y = p)
+```
+
+```{r sf_interse}
+#| echo: false
+#| fig-height: 10
+#| nomar: true
+plot(st_geometry(mtq))
+plot(p, border="red", lwd=4, add=T)
+text(719127,1641586, "p", pos = 4, cex = 3)
+```
+:::
+
+::: {.column width="10%"}
+\
+\
+\
+\
+\
+
+[**→**]{.bigbis}
+:::
+
+::: {.column width="40%"}
+```{r sf_intersect3}
+#| warning: false
+#| nomar: true
+#| fig-height: 10
+plot(st_geometry(mtq_z))
+```
+:::
+:::
+
+## Séléction spatiale {.scrollable}
+
+\
+
+::: columns
+::: {.column .center width="55%"}
+```{r sf_filter}
+#| warning: false
+#| nomar: true
+
+SelSpa <- st_filter(x = mtq, 
+                    y = p, 
+                    .predicate = st_intersects)
+
+```
+
+```{r sf_filter2}
+#| echo: false
+#| fig-height: 9
+#| nomar: true
+
+plot(st_geometry(mtq))
+plot(p, border="red", lwd=4, add=T)
+text(719127,1641586, "p", pos = 4, cex = 3)
+```
+:::
+
+::: {.column .center width="5%"}
+:::
+
+::: {.column .center width="40%"}
+```{r sf_filter3}
+#| warning: false
+#| nomar: true
+#| fig-height: 13
+plot(st_geometry(mtq))
+plot(st_geometry(SelSpa), col = "red", add = TRUE)
+```
+:::
+:::
+
+\
+
+::: columns
+::: {.column .center width="55%"}
+```{r sf_filter_bis}
+#| warning: false
+#| nomar: true
+
+SelSpa2 <- st_filter(x = mtq, 
+                     y = p, 
+                    .predicate = st_within)
+
+```
+
+```{r sf_filter2_bis}
+#| echo: false
+#| fig-height: 9
+#| nomar: true
+
+plot(st_geometry(mtq))
+plot(p, border="red", lwd=4, add=T)
+text(719127,1641586, "p", pos = 4, cex = 3)
+```
+:::
+
+::: {.column .center width="5%"}
+:::
+
+::: {.column .center width="40%"}
+```{r sf_filter3_bis}
+#| warning: false
+#| nomar: true
+#| fig-height: 13
+plot(st_geometry(mtq))
+plot(st_geometry(SelSpa2), col = "red", add = TRUE)
+```
+:::
+:::
+
+## Mesures
+
+\
+
+::: columns
+::: {.column .center width="45%"}
+```{r sf_mesure}
+#| warning: false
+#| nomar: true
+#| cache: false
+mtq$surface <- st_area(mtq)
+mtq$perimetre <- st_perimeter(mtq)
+```
+
+\
+
+```{r sf_mesure1}
+#| echo: false
+#| warning: false
+#| nomar: true
+#| cache: false
+DT::datatable(mtq[,c(3,9,10)],
+  options = list(pageLength = 3, dom = 'tip'), rownames = FALSE)
+```
+:::
+
+::: {.column .center width="2%"}
+:::
+
+::: {.column .center width="53%"}
+```{r sf_mesure2}
+#| warning: false
+#| nomar: true
+#| cache: false
+mat_dist <- st_distance(x = mtq_centroid, 
+                        y = mtq_centroid)
+
+rownames(mat_dist) <- mtq_centroid$INSEE_COM
+colnames(mat_dist) <- mtq_centroid$INSEE_COM
+```
+
+\
+
+```{r sf_mesure3}
+#| warning: false
+#| echo: true
+#| nomar: true
+mat_dist[1:4, 1:4]
+```
+:::
+:::
+
+## Grille régulière {.scrollable}
+
+::: columns
+::: {.column .center width="54%"}
+Construction d'une grille régulière
+
+```{r sf_grid}
+#| warning: false
+#| nomar: true
+#| fig-height: 8
+mtq_grid50 <- st_make_grid(x = mtq, 
+                           cellsize = 2000, 
+                           square = TRUE)
+
+# Ajout d'un identifiant unique
+mtq_grid50 <- st_sf(ID = 1:length(mtq_grid50), 
+                    geom = mtq_grid50)
+
+# Affichage
+plot(st_geometry(mtq))
+plot(st_geometry(mtq_centroid), add = TRUE)
+plot(st_geometry(mtq_grid50), add = TRUE)
+```
+:::
+
+::: {.column .center width="1%"}
+:::
+
+::: {.column .center width="45%"}
+Compter des points dans des polygones
+
+```{r sf_count_pts}
+inter <- st_intersects(x = mtq_grid50,
+                       y = mtq_centroid, 
+                       sparse = TRUE)
+
+mtq_grid50$nb_centroid <- lengths(inter)
+```
+
+\
+
+```{r sf_grid2}
+#| warning: false
+#| nomar: true
+#| fig-height: 13
+#| echo: false
+
+plot(mtq_grid50["nb_centroid"])
+```
+:::
+:::
+
+## Jointure spatiale {.scrollable}
+
+\
+
+```{r sf_join}
+#| warning: false
+#| nomar: true
+#| fig-height: 13
+
+grid_centroid <-  st_join(x = mtq_grid50,
+                          y = mtq_centroid,
+                          join = st_intersects,
+                          left = FALSE)
+
+grid_centroid
+
+```
+
+\
+
+```{r sf_join2}
+#| nomar: true
+#| fig-height: 13
+#| echo: true
+
+plot(grid_centroid["STATUS"])
+```
+
+\
+
+## Polygones de Voronoi
+
+\
+
+Les fonctions `sf` peuvent être utilisées avec le(s) pipe(s).
+
+::: columns
+::: {.column .center width="50%"}
+```{r sf_voronoix}
+#| nomar: true
+#| echo: true
+#| eval: false
+#| code-line-numbers: 1-10
+mtq_centroid |> 
+  st_union() |> 
+  st_voronoi() |> 
+  st_collection_extract("POLYGON") |> 
+  st_intersection(mtq_union) |> 
+  st_sf() |> 
+  st_join(mtq_centroid, st_intersects) |>
+  st_cast("MULTIPOLYGON") |>
+  st_geometry() |>
+  plot(col = "ivory4") 
+
+# Affichage des centroides
+plot(st_geometry(mtq_centroid), 
+     col = "red", 
+     pch = 20, 
+     add = TRUE)
+
+```
+:::
+
+::: {.column .center width="10%"}
+:::
+
+::: {.column .center width="40%"}
+```{r sf_voronoix2}
+#| nomar: true
+#| echo: false
+#| eval: true
+#| fig-height: 11
+mtq_centroid |> 
+  st_union() |> 
+  st_voronoi() |> 
+  st_collection_extract("POLYGON") |> 
+  st_intersection(mtq_union) |> 
+  st_sf() |> 
+  st_join(mtq_centroid, st_intersects) |>
+  st_cast("MULTIPOLYGON") |>
+  st_geometry() |>
+  plot(col = "ivory4") 
+
+# Affichage des centroides
+plot(st_geometry(mtq_centroid), 
+     col = "red", 
+     cex = 1.5,
+     pch = 20, 
+     add = TRUE)
+
+```
+:::
+:::
+
+# Manipulation de données RASTER avec R
+
+## Le package `terra`
+
+::: columns
+::: {.column width="73%"}
+Le package `terra` permet de gérer des données vectorielles et surtout
+**raster**.
+
+Il succède au package `raster` [@R-raster] du même auteur.
+
+![[rspatial.org](https://rspatial.org/rs/2-exploration.html#single-band-and-composite-maps)](img/terra-multi.png)
+:::
+
+::: {.column width="27%"}
+![](img/logo_terra.png)
+
+::: txt2
+**Principales fonctionnalités :**
+
+-   Affichage
+-   Modifications de la zone d'étude (projection, crop, mask,
+    agrégation, fusion...)
+-   Algèbre spatial (opérations locales, focales, globales, zonales)
+-   Transformation et conversion (rasterisation, vectorisation)
+:::
+:::
+:::
+
+## Import de données
+
+```{r config_tera}
+#| include: false
+knitr::opts_chunk$set(fig.width=6, fig.height=6)
+```
+
+```{r terra}
+#| cache: false
+library(terra)
+```
+
+\
+
+::: columns
+::: {.column .center width="45%"}
+**Données RASTER (`SpatRaster`)**
+
+```{r import_terra}
+#| cache: false
+#| fig-height: 7
+alt_raw <- rast("data/altitude.tif") 
+
+alt_raw
+```
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column .center width="53%"}
+**Données vectorielles (`SpatVector`)**
+
+```{r import_terra2}
+#| cache: false
+#| fig-height: 6
+com <- vect("data/com46.gpkg", layer="com")
+
+com
+```
+:::
+:::
+
+## Affichage
+
+\
+
+::: columns
+::: {.column .center width="45%"}
+**Données RASTER**
+
+```{r affich_terra}
+#| cache: false
+#| fig-height: 8
+alt_raw <- rast("data/altitude.tif") 
+
+plot(alt_raw)
+```
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column .center width="53%"}
+**Données vectorielles**
+
+```{r affich_terra2}
+#| cache: false
+#| fig-height: 7
+com <- vect("data/com46.gpkg", layer="com")
+
+plot(com)
+```
+:::
+:::
+
+## Reprojection
+
+\
+
+```{r reproj_terra}
+#| cache: false
+alt_2154 <- project(x = alt_raw, y = "EPSG:2154", method = "bilinear")
+```
+
+\
+
+::: columns
+::: {.column .center width="50%"}
+[**alt_raw** (WGS 84)]{.colour}
+
+```{r reproj_terra2}
+#| cache: false
+#| fig-height: 8
+plot(alt_raw)
+```
+:::
+
+::: {.column .center width="50%"}
+[**alt_2154** (RGF93 v1 / Lambert-93)]{.colour}
+
+```{r reproj_terra3}
+#| cache: false
+#| fig-height: 8
+plot(alt_2154)
+```
+:::
+:::
+
+## Crop & mask
+
+::: columns
+::: {.column .center width="49%"}
+```{r crop-terra}
+#| cache: false
+#| fig-height: 8
+#| code-line-numbers: "4"
+cahors <- subset(com, com$INSEE_COM == "46042") 
+
+# Crop sur la commune de Cahors
+crop_cahors <- crop(alt_2154, cahors)
+
+# Affichage
+plot(crop_cahors)
+plot(cahors, add=TRUE)
+```
+:::
+
+::: {.column .center width="2%"}
+:::
+
+::: {.column .center width="49%"}
+```{r mask_terra}
+#| cache: false
+#| fig-height: 8
+#| code-line-numbers: "2"
+# Mask sur la commune de Cahors
+alt_mask <- mask(crop_cahors, cahors)
+
+# Affichage
+plot(alt_mask)
+plot(cahors, add=TRUE)
+```
+:::
+:::
+
+## Fusion de raster {.scrollable}
+
+```{r fusion_terra}
+#| echo: false
+
+par(mfrow=c(1,2))
+# Extraction des limites communales de Bellefont-La Rauze
+bellefont <- subset(com, com$INSEE_COM == "46156") 
+# Découpage du raster d'élévation en fonction des limites de Bellefont-La Rauze
+crop_bellefont <- crop(alt_2154, bellefont)
+
+plot(crop_cahors, main = "Crop Cahors")
+plot(cahors, add = TRUE)
+plot(bellefont, add = TRUE)
+
+plot(crop_bellefont, main = "Crop Bellefont-La Rauze")
+plot(bellefont, add = TRUE)
+plot(cahors, add = TRUE)
+
+```
+
+
+```{r set_chunk}
+#| echo: false
+par(mfrow=c(1,1))
+```
+
+\
+
+<center>
+**Deux possibilités :**
+</center>
+
+\
+
+:::columns
+
+:::{.column width=50%}
+
+```{r fusion2_terra}
+#| code-line-numbers: 1-2
+# merge_raster <- merge(crop_cahors, 
+#                       crop_bellefont)
+
+# plot(merge_raster)
+# plot(bellefont, add = TRUE)
+# plot(cahors, add = TRUE)
+```
+
+:::
+
+:::{.column width=50%}
+
+```{r fusion3_terra}
+#| code-line-numbers: 1-2
+# mosaic_raster <- mosaic(crop_cahors, 
+#                         crop_bellefont)
+
+# plot(mosaic_raster)
+# plot(bellefont, add = TRUE)
+# plot(cahors, add = TRUE)
+```
+
+:::
+
+:::
+
+## Extract {.scrollable}
+
+::: columns
+
+::: {.column width="49%"}
+
+Extraction en fonction d'une couche vectorielle.
+
+```{r extract_terra}
+#| code-line-numbers: 1-3
+stat_by_com <- extract(alt_2154, 
+                       com, 
+                       fun = "mean")
+
+head(stat_by_com)
+```
+
+:::
+
+::: {.column width="2%"}
+
+:::
+
+::: {.column width="49%"}
+
+Cartographie des résultats.
+
+```{r extract_terra2}
+#| code-line-numbers: "1"
+#| fig-height: 8
+com$alt_mean <- stat_by_com[,-1]
+
+plot(com, "alt_mean", 
+     col=terrain.colors(5))
+```
+
+:::
+
+:::
+
+## Agrégation & désagrégation {.scrollable}
+
+Afficher la résolution d’un raster
+
+```{r}
+res(alt_2154) 
+```
+
+\
+
+Créer une grille de même étendue, puis en diminuer la résolution spatiale (plus grosses cellules)
+```{r}
+alt_lower_model  <- alt_2154
+
+# Tailles des cellules = 1000 mètres
+res(alt_lower_model) <- 2000
+
+alt_lower_model
+
+```
+
+\
+
+La fonction resample() permet de ré-échantillonner les valeurs de départ dans la nouvelle résolution spatiale. Plusieurs méthodes de ré-échantillonnage sont disponibles 
+
+```{r}
+alt_lower <- resample(x = alt_2154,
+                      y = alt_lower_model, 
+                      method = "bilinear") 
+
+```
+
+\
+
+```{r}
+plot(alt_lower, 
+     main = "cellsize = 1000m - ré-échantillonnage bilinéaire")
+```
+
+
+## Algèbre spatiale
+
+![](images/lo_fo_zo_glo-01.png)
+
+\
+\
+
+:::{.bigquat}
+<center>
+[Algèbre spatiale avec `Terra` &rarr; [Géomatique avec R](https://rcarto.github.io/geomatique_avec_r/09_package_terra.html)]{.bigbis}
+</center>
+:::
+
+
+# Pour aller plus loin...
+
+
+## Conversion d'un objet spatial
+
+Pour profiter des fonctionnalités offertes par les différents packages de manipulation et d'analyse de données spatiales, il est fréquement nécessaire de convertir le type d'objet spatial utilisé.
+
+\
+
+:::columns
+
+:::{.column width="49%"}
+
+<center>
+**Objet `sf` &rarr; objet `SpatVector`**
+</center>
+
+\
+
+```{r}
+#| fig-height: 6
+mtq_terra <- vect(mtq)
+
+plot(mtq_terra)
+```
+
+
+
+:::
+
+:::{.column width="2%"}
+
+:::
+
+:::{.column width="49%"}
+
+<center>
+**Objet `SpatVector` &rarr; objet `sf`**
+</center>
+
+\
+
+```{r}
+#| fig-height: 7
+mtq_sf <- st_as_sf(mtq_terra)
+
+plot(st_geometry(mtq_sf))
+```
+
+
+:::
+
+:::
+
+## Analyse & statistique spatiale {.scrollable}
+
+::: columns
+::: {.column width="55%"}
+
+Différents packages pour l'analyse ou la statistique spatiale :
+
+-   `spatstat` : Analyse statistique de semis de points
+-   `gstat` : Variogram et Krigeage
+-   `rgeoda` : Geoda avec R
+-   `GWmodel`, `spgwr` : Geographically Weighted Models
+-   `mapiso` : Conversion Raster vers polygone
+-   `osrm` : Calcul d'itinéraire (OpenStreetMap)
+-   `sfnetworks` : Analyse des réseaux géospatiaux
+-   `stplanr` : Planification et de modélisation des transports
+-   `...`
+
+\
+
+```{r}
+#| eval: true
+#| echo: false
+#| message: false
+#| warning: false
+
+library(osmdata)
+bbox_avignon <- getbb("Avignon, Quartier Centre")
+semis_points <-  bbox_avignon |> 
+  opq(osm_types = "node")|>
+  add_osm_feature(key = 'amenity', value = "restaurant") |>
+  osmdata_sf() |>
+  _$osm_points |>
+  st_transform("EPSG:3857")
+```
+
+:::
+
+::: {.column width="1%"}
+
+:::
+
+::: {.column width="44%"}
+
+
+<center>
+**Semis de points**
+</center>
+
+```{r}
+#| fig-height: 8
+#| eval: true
+#| echo: false
+library(mapsf)
+mf_map(semis_points, cex = 2)
+```
+
+:::
+:::
+
+\
+
+<center>
+[**Exemple appliqué :**]{.bigbis}
+
+\
+
+**A. Densité d'un semis par la méthode de lissage par noyaux (KDE) :**
+</center>
+
+\
+
+:::columns
+
+:::{.column width="65%"}
+
+```{r}
+#| cache: false
+#| message: false
+#| warning: false
+
+library(spatstat)
+
+# Conversion du semi de point en objet "ppp"
+p <- as.ppp(X = st_coordinates(semis_points), 
+            W = as.owin(st_bbox(semis_points)))
+
+# Calcul de la densité (KDE)
+ds <- density.ppp(x = p, 
+                  sigma = 50, 
+                  eps = 10, 
+                  positive = TRUE)
+
+```
+:::
+
+:::{.column width="35%"}
+```{r}
+#| fig-height: 8
+plot(ds)
+
+```
+
+:::
+
+:::
+
+\
+
+<center>
+**B. Conversion de l'objet crée (`img`, package `spatstat`) en objet `SpatRaster` (package `terra`) :**
+</center>
+
+\
+
+
+:::columns
+
+:::{.column width="65%"}
+
+```{r}
+#| cache: false
+library(terra)
+
+# densité en restaurants / hectares
+r <- rast(ds) * 100 * 100
+
+# Assignation de la projection
+crs(r) <- st_crs(semis_points)$wkt
+
+```
+
+:::
+
+:::{.column width="35%"}
+
+```{r}
+#| fig-height: 8
+
+plot(r)
+
+```
+
+:::
+
+:::
+
+\
+
+<center>
+**C. Transformation du Raster (`SpatRaster`) et polygone vectoriel (`sf`) :**
+</center>
+
+\
+
+
+:::columns
+
+:::{.column width="55%"}
+
+```{r}
+#| cache: false
+#| warning: false
+
+library(mapiso)
+
+# Limites des classes
+bks <-  c(1, 2, 3, 4, 5, 6, 7, max(values(r)))
+
+# Transformation du raster en polygones
+iso_dens <- mapiso(r, breaks = bks)
+
+# Suppression de la première classe ([0, 1[)
+iso_dens <- iso_dens[-1, ]
+
+```
+
+:::
+
+:::{.column width="45%"}
+
+```{r}
+#| fig-height: 8
+#| warning: false
+library(mapsf)
+
+mf_map(iso_dens, var="isomin", 
+       type = "choro", nbreaks = 7)
+```
+
+:::
+
+:::
+
+
+
+
+# Cartographie avec R
+
+## Cartographie thématique
+
+\
+
+**Trois packages** de référence. 
+
+::: columns
+::: {.column width="33%"}
+![](img/logo_tmap.png){width="240px"}\
+`tmap` [@R-tmap]
+:::
+
+::: {.column width="33%"}
+![](img/logo_ggplot2.png){width="240px"}\
+`ggplot2` + `ggspatial` [@R-ggspatial]
+:::
+
+::: {.column width="33%"}
+![](img/logo_mapsf.png){width="240px"}\
+`mapsf` [@R-mapsf]
+:::
+:::
+
+\
+
+
+
+## Le package `mapsf`
+
+::: columns
+::: {.column width="25%"}
+![](img/logo_mapsf.png)
+
+Le package `mapsf` [@R-mapsf] remplace `cartography` [@R-cartography].
+
+\
+
+<center>
+**&rarr;** [**Site Web**](https://riatelab.github.io/mapsf/)
+</center>
+:::
+
+::: {.column width="3%"}
+:::
+
+::: {.column width="37%"}
+**Fonctionnalités principales :**
+
+-   9 types de cartes possibles
+-   Tous les éléments d'habillage
+-   Thèmes (personalisable)
+-   Insets (carton et zoom)
+-   Etiquettes
+
+<center>
+![[Download CheatSheet](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf)](img/mapsf_cheatsheet.png)
+</center>
+:::
+
+
+
+::: {.column width="35%"}
+`mf_map()` est la fonction principale.
+
+```{r}
+mf_map(x = mtq)
+```
+
+```{r}
+mf_map(x = mtq, 
+       var = "STATUS", 
+       type = "typo")
+```
+
+:::
+
+:::
+
+## Utilisation simple
+
+```{r mapsf_simple1}
+#| fig-width: 5
+#| fig.height: 6
+#| output-location: column-fragment
+#| code-line-numbers: 1-1|3-4|6-7
+library(mapsf)
+
+# Import données exemple
+mtq <- mf_get_mtq()
+
+# Affichage de l'objet sf
+mf_map(x = mtq)
+```
+
+## Utilisation simple
+
+```{r mapsf_simple3}
+#| fig-width: 5
+#| fig.height: 6
+#| output-location: column
+#| code-line-numbers: 9-15
+library(mapsf)
+
+# Import données exemple
+mtq <- mf_get_mtq()
+
+# Affichage de l'objet sf
+mf_map(x = mtq)
+
+# Carte en symbols proportionnels
+mf_map(
+  x = mtq,
+  var = "POP",
+  type = "prop", 
+  leg_title = "Population"
+)
+
+```
+
+## Utilisation simple
+
+```{r mapsf_simple4}
+#| fig-width: 5
+#| fig-height: 6
+#| output-location: column
+#| code-line-numbers: 16-23
+library(mapsf)
+# Import données exemple
+mtq <- mf_get_mtq()
+
+# Affichage de l'objet sf
+mf_map(x = mtq)
+
+# Carte en symbols proportionnels
+mf_map(
+  x = mtq,
+  var = "POP",
+  type = "prop", 
+  leg_title = "Population"
+)
+
+# Ajout éléments de mise en page
+mf_layout(
+  title = "Population in Martinique", 
+  credits = 
+    paste0("T. Giraud;",  
+           "Sources: INSEE & IGN, 2018"
+    )
+)
+
+```
+
+## Utilisation avancée
+
+::: columns
+::: {.column width="40%"}
+
+<small>
+
+```{r mapsf_avance}
+#| results: hide
+#| code-overflow: scroll
+mf_theme("agolalight", bg = "ivory1")
+
+mf_export(x = mtq, filename = "img/mtq.png",
+          width = 600, res = 120,
+          expandBB = c(0, 0, 0, .3))
+
+mf_shadow(mtq, col = "grey90", add = TRUE)
+
+mf_map(x = mtq, var = "MED", type = "choro",
+       pal = "Dark Mint",
+       breaks = "quantile",
+       nbreaks = 6,
+       leg_title = "Median Income\n(euros)",
+       leg_val_rnd = -2,
+       add = TRUE)
+
+mf_inset_on(x = "worldmap", pos = "right")
+
+mf_worldmap(mtq, col = "#0E3F5C")
+
+mf_inset_off()
+
+mf_title("Wealth in Martinique, 2015")
+
+mf_credits("T. Giraud\nSources: INSEE & IGN, 2018")
+
+mf_scale(size = 5)
+
+mf_arrow("topleft")
+
+dev.off()
+```
+
+</small>
+:::
+
+::: {.column width="60%"}
+![](img/mtq.png){width="80%"}
+:::
+:::
+
+
+<center>
+[Manuel d'utilisation du package `mapsf` &rarr; [Cartographie avec R](https://rcarto.github.io/geomatique_avec_r/09_package_terra.html)]{.bigbis}
+</center>
+
+
+
+## Cartographie interactive
+
+::: columns
+::: {.column .center width="48%"}
+![](img/logo_leaflet.png){width="280px"}\
+`leaflet` [@R-leaflet], repose sur la bibliothèque JS leaflet
+
+\
+
+
+![](img/logo_mapview.gif){width="240px"}\
+`mapview` [@R-mapview], repose sur le package `leaflet`
+:::
+
+::: {.column width="4%"}
+
+:::
+
+
+::: {.column .center width="48%"}
+
+![](img/logo_tmap.png){width="180px"}
+
+`tmap` dispose d'un mode interactif (`leaflet`).
+
+\
+
+![](img/mapdeck.gif){width="205px"}\
+`mapdeck` [@R-mapdeck], repose sur les bibliothèques JS Mapbox GL et
+Deck.gl
+:::
+:::
+
+## `mapview` pour l'exploration
+
+```{r mapview_true}
+#| cache: false
+#| include: false
+library(mapview)
+x <- mapview(mtq)
+dir.create("html", showWarnings = F)
+mapshot(x, url = "html/map.html")
+```
+
+```{r mapview_fake}
+#| cache: true
+#| echo: true
+#| eval: false
+library(mapview)
+
+mapview(mtq)
+```
+
+\
+
+<center>
+<iframe src="html/map.html" width="500px" height="450px">
+
+</iframe>
+</center>
+
+## `tmap` pour la cartographie thématique 
+
+:::columns
+
+:::{.column width="50%}
+
+```{r tmap_simple}
+#| eval: false
+#| echo: true
+#| warning: false
+
+library(tmap)
+
+tmap_mode("view")
+
+tm_shape(mtq) +
+tm_polygons(col="STATUS")
+
+```
+
+:::
+
+:::{.column width="50%}
+
+```{r tmap_simple2}
+#| eval: true
+#| cache: false
+#| echo: false
+#| warning: false
+
+library(tmap)
+
+tmap_mode("view")
+
+tm_shape(mtq) +
+tm_polygons(col="STATUS")
+
+```
+
+:::
+
+:::
+
+## `shiny` pour les applications
+
+<center>
+![](img/cityguess.png){width="57%"}
+
+[rcarto.shinyapps.io/cityguess](https://rcarto.shinyapps.io/cityguess/)
+
+</center>
+
+
+## Couleurs et palettes {.scrollable}
+
+::: columns
+::: {.column width="49%"}
+**De nombreuses palettes sont disponibles en R-base :** 
+
+
+```{r pal1}
+#| eval: false
+#| echo: true
+
+hcl.pals()
+
+```
+
+![](img/swatch-plot-1.svg)
+
+
+```{r pal2}
+#| eval: true
+#| echo: true
+
+hcl.colors(7, "YlOrRd")
+```
+
+
+:::
+
+::: {.column width="2%"}
+
+:::
+
+::: {.column width="49%"}
+
+Sinon, près de 70 packages proposent des palettes...
+
+-   `paletteer` [@R-paletteer] combine 2587 palettes
+-   `cols4all` [@R-cols4all] propose une app shiny :
+
+```{r pal3}
+#| eval: false
+#| echo: true
+
+cols4all::c4a_gui()
+```
+
+![](img/cols4all.png)
+:::
+:::
+
+\
+
+Il est également possible de **construire sa palette personnalisée avec les codes couleur héxadécimaux :**
+
+```{r pal4}
+#| eval: true
+#| echo: true
+
+my_pal <- c("#7D0025", "#BE1D00", "#EB5500", "#F39300", "#F7C252", "#FCE7A0")
+```
+
+\
+
+**Certaines couleurs sont directement implementées dans R** et peuvent être directement appelées par un nom :
+
+
+```{r pal5}
+#| eval: true
+#| echo: true
+
+my_pal <- c("red4", "red", "orange", "yellow", "#FFFFC8")
+```
+
+\
+
+<center>
+Liste des couleurs implementées : [**http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf**](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
+
+```{=html}
+<iframe width="800" height="700" src="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" title="Quarto Documentation"></iframe>
+```
+
+</center>
+
+\
+\
+
+# Acquisition de données
+
+
+## Télécharger des données spatiales {.scrollable}
+
+De nombreux packages API existent pour directement récupérer des données spatiales. Quelques exemples :
+
+::: columns
+::: {.column width="47%"}
+**Maillages administratifs** :\
+`rnaturalearth` pour les pays du monde\
+`giscoR` pour les régions européennes\
+`tigris`, `mapSpain`, `geobr`...
+
+**Données d'élévation** :\
+`elevatr` {{< fa solid triangle-exclamation >}}
+
+**Occurrences d'especes** :\
+`spocc`
+
+**Données diverses** :\
+`geodata` (climat, cultures, altitude, utilisation des terres, accessibilité, limites administratives, ect...)   
+
+:::
+
+::: {.column width="6%"}
+
+::: 
+
+::: {.column width="47%"}
+**Données eco / socio / démographique** :\
+`wbstats` (World Bank)\
+`eurostat`\
+`rdhs` (santé)\
+...
+
+**Données satellitaires** :\
+`sen2r` (Sentinel-2)\
+`MODIStsp` (MODIS)\
+`rgee` (Google Earth Engine)\
+`nasapower` (météo, climato)
+:::
+:::
+
+\
+
+<center>
+[**Exemple `rnaturalearth` :**]{.bigbis}   
+[https://www.naturalearthdata.com/](https://www.naturalearthdata.com/)
+
+\
+
+
+```{r acquisition}
+#| eval: true
+#| echo: true
+#| warnings: false
+
+library(rnaturalearth)
+
+pays <- ne_download(scale = 10,
+                    type = "countries",
+                    category = "cultural",
+                    destdir = tempdir(),
+                    load = TRUE,
+                    returnclass = "sf")
+```
+
+\
+
+```{r acquisition2}
+#| eval: true
+#| echo: true
+#| warnings: false
+
+mf_map(pays) 
+
+```
+
+
+\
+
+
+[**Exemple `geodata` - Données GADM :**]{.bigbis}   
+[https://github.com/rspatial/geodata](https://github.com/rspatial/geodata)   
+[https://gadm.org/](https://gadm.org/)
+\
+
+```{r acquisition3}
+#| eval: true
+#| echo: true
+#| warnings: false
+
+library(geodata)
+
+sen <- gadm(country="senegal", 
+            level=3,
+            version="latest", 
+            resolution=2,
+            path=tempdir())
+
+
+```
+
+\
+
+```{r acquisition4}
+#| eval: true
+#| echo: true
+#| warnings: false
+
+plot(sen)
+
+```
+
+
+\
+
+
+</center>
+
+
+## Récupérer des tuiles (fond de carte Raster) {.nostretch}
+
+::: columns
+::: {.column width="20%"}
+![](img/logo_maptiles.png) Le package `maptiles` [@R-maptiles] permet de
+télécharger des fonds de carte (raster).
+:::
+
+::: {.column width="59%"}
+```{r maptiles}
+#| include: true
+#| eval: true
+#| code-line-numbers: 1,6-11
+library(maptiles)
+
+bbox <- terra::ext(c(xmin = 4.795, xmax = 4.825,
+                     ymin = 43.94, ymax = 43.955))
+
+tiles <- get_tiles(x = bbox, 
+                   provider = "OpenStreetMap",
+                   project = FALSE, 
+                   crop = TRUE, 
+                   zoom = 15, 
+                   cachedir = "cache")
+
+plot(tiles)
+
+
+```
+
+
+![](img/tiles.png){width="350" height="243"}
+:::
+
+::: {.column width="1%"}
+:::
+
+::: {.column width="20%"}
+**Alternatives :**
+
+
+:::{.soixantequinze}
+-   `ceramic`
+-   `ggmap` (pour `ggplot2`)
+-   `ggspatial` (pour `ggplot2`, utilise `rosm`)
+-   `mapboxapi` (mapbox)
+-   `mapsapi` (google, utilise `RgoogleMaps`)
+-   `OpenStreetMap` (nécessite Java)
+-   `RgoogleMaps` (google)
+-   `rosm`
+-   …
+:::
+
+:::
+:::
+
+## Géocoder des adresses {.scrollable}
+
+
+::: columns
+::: {.column width="20%"}
+![](img/logo_tidygeocoder.png)
+
+Le package `tidygeocoder` [@R-tidygeocoder] permet d'utiliser [un grand
+nombre de services de géocodage en
+ligne](https://jessecambon.github.io/tidygeocoder/articles/geocoder_services.html).
+:::
+
+::: {.column width="80%"}
+```{r tidygeocoder1}
+#| eval: true
+#| cache: true
+#| message: false
+
+library(tidygeocoder)
+EHESS <- geo("54 boulevard Raspail, 75006 Paris, FRANCE")
+
+EHESS
+```
+
+\
+
+```{r tidygeocoder2}
+#| eval: true
+#| cache: false
+
+EHESS_sf <- st_as_sf(EHESS, 
+                     coords = c("long", "lat"), 
+                     crs = "EPSG:4326") 
+  
+mapview(EHESS_sf)
+
+```
+
+:::
+:::
+
+## Digitalisation
+
+Le package `mapedit` (Appelhans et al., 2020) permet de digitaliser des données vectorielles directement dans R. 
+
+<center>
+![](img/mapedit-leafpm-1.gif){width="60%"}
+
+**Privilégier les logiciels SIG classiques pour faire de la digitalisation !**
+</center>
+
+
+## OpenStreetMap
+
+::: columns
+::: {.column width="20%"}
+![](img/Openstreetmap_logo.svg.png) Une base de données cartographique
+libre et contributive.
+:::
+
+::: {.column width="50%"}
+**Conditions d'utilisation**
+
+> OpenStreetMap est en *données libres* : vous êtes libre de l’utiliser
+> dans n’importe quel but tant que vous créditez OpenStreetMap et ses
+> contributeurs. Si vous modifiez ou vous appuyez sur les données d’une
+> façon quelconque, vous pouvez distribuer le résultat seulement sous la
+> même licence. (...)
+
+**Contributions**
+
+> (...) Nos contributeurs incluent des cartographes enthousiastes, des
+> professionnels du SIG, des ingénieurs qui font fonctionner les
+> serveurs d’OSM, des humanitaires cartographiant les zones dévastées
+> par une catastrophe et beaucoup d’autres. (...)
+:::
+
+::: {.column width="30%"}
+**Couverture/complétude**
+
+-   Données France : 4,2 GB\
+-   Données Chine : 1,1 GB\
+-   Données Afrique : 6,4 GB
+
+<iframe width="460" height="215" src="https://www.youtube-nocookie.com/embed/7sC83j6vzjo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+
+</iframe>
+:::
+:::
+
+
+
+## Acquisition données OSM {.scrollable}
+
+::: columns
+::: {.column width="25%"}
+![](img/logo_osmdata.png){width="70%"}
+
+Le package `osmdata` [@R-osmdata] utilise l'API du service [Overpass
+turbo](https://overpass-turbo.eu/) pour extraire des données de la BD
+OpenStreetMap.\
+Nous utilisons le [système de clef/valeur
+d'OSM](https://wiki.openstreetmap.org/wiki) pour construire la requête.
+:::
+
+::: {.column width="2%"}
+
+:::
+
+::: {.column width="73%"}
+```{r mapsf_init}
+#| include: false
+#| cache: false
+mapsf::mf_theme(mar = c(0,0,0,0))
+```
+
+```{r osm_download1}
+#| cache: true
+#| fig-width: 3
+#| fig-height: 3
+#| fig-align: center
+library(osmdata)
+
+bbox_avignon <- getbb("Avignon, Quartier Centre")
+
+bbox_avignon 
+```
+
+\
+
+```{r osm_download2}
+# Emprise et type de données à extraire
+q <- opq(bbox = bbox_avignon, osm_types = "node")
+
+# Extraction des restaurants
+req <- add_osm_feature(opq = q, key = 'amenity', value = "restaurant")
+res <- osmdata_sf(req)
+
+resto <- res$osm_points
+
+# Affichage des points extraits
+mf_map(resto)
+```
+:::
+:::
+
+
+# Ressources
+
+## Geocomputation with R
+
+::: columns
+::: {.column width="40%"}
+![](img/GeocomputationwithR.png)
+:::
+
+::: {.column width="60%"}
+
+\
+
+{{< fa solid users >}} Robin Lovelace, Jakub Nowosad, Jannes Muenchow (2019)
+
+{{< fa solid link >}} [r.geocompx.org](https://r.geocompx.org/)
+
+{{< fa solid plus >}} [Première partie traduite en
+français](https://r.geocompx.org/fr/)
+:::
+:::
+
+## Spatial Data Science with applications in R
+
+::: columns
+::: {.column width="40%"}
+![](img/sdsr.jpg){width="100%"}
+:::
+
+::: {.column width="60%"}
+
+\
+
+{{< fa solid users >}} Edzer Pebesma, Roger Bivand (2020)
+
+{{< fa solid link >}} [r-spatial.org/book](https://r-spatial.org/book/)
+:::
+:::
+
+## Spatial Data Science with R and `terra`
+
+::: columns
+::: {.column width="50%"}
+![](img/sds.png)
+:::
+
+::: {.column width="50%"}
+
+\
+
+{{< fa solid users >}} Robert J. Hijmans (2023)
+
+{{< fa solid link >}} [rspatial.org](https://rspatial.org/)
+:::
+:::
+
+## Cartographie et Géomatique avec R
+
+::: columns
+::: {.column width="50%"}
+
+<center>
+![](img/carto_avec_r.png)
+
+
+{{< fa solid link >}} [rcarto.github.io/cartographie_avec_r](https://rcarto.github.io/cartographie_avec_r/)
+
+</center>
+
+:::
+
+::: {.column width="50%"}
+
+<center>
+![](img/geom_avec_r.png)
+
+
+{{< fa solid link >}} [rcarto.github.io/geomatique_avec_r](https://rcarto.github.io/geomatique_avec_r/)
+
+</center>
+:::
+:::
+
+## Rzine.fr {.nostretch}
+
+::: columns
+::: {.column width="28%"}
+![](img/logo_rzine.png){width="90%"}
+
+{{< fa solid link >}} [https://rzine.fr/](https://rzine.fr/)
+
+-   Référencement de documents et supports divers.
+-   La collection Rzine : publications open source, *open peer review*.
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="70%"}
+
+<center>
+***"Encourager la production et favoriser la diffusion de documentation sur la pratique de R en SHS"***
+</center>
+
+![](img/rzine.png){width="90%}
+:::
+
+
+:::
+
+## Groupe ElementR
+
+::: columns
+::: {.column width="31%"}
+![](img/logo_elementr.png){width="80%"}
+
+{{< fa solid link >}} [https://elementr.netlify.app/](https://elementr.netlify.app/)
+
+\
+
+:::{.soixantequinze}
+[ElementR](https://elementr.netlify.app/) est un groupe d'autoformation qui fédère trois unités de recherche en géographie : l'UMR Géographie-Cités, l'UMR PRODIG et l'UAR RIATE.\
+
+Ses activités sont accessibles à l'ensemble des membres du Campus
+Condorcet.
+:::
+
+:::
+
+::: {.column width="1%"}
+:::
+
+::: {.column width="68%"}
+
+<center>
+***"Pour le traitement de l’information géographique avec R"***
+</center>
+
+![](img/elementr.png)
+:::
+
+
+:::
+
+<!-- ## Ressources -->
+
+<!-- -   [CRAN Task View: Analysis of Spatial -->
+<!--     Data](https://cran.r-project.org/web/views/Spatial.html) -->
+<!-- -   [R Special Interest Group on using Geographical data and -->
+<!--     Mapping](https://stat.ethz.ch/mailman/listinfo/r-sig-geo) (mailing -->
+<!--     list) -->
+<!-- -   [r-spatial blog](https://www.r-spatial.org/) -->
+<!-- -   [Progress in the R ecosystem for representing and handling spatial -->
+<!--     data](https://link.springer.com/article/10.1007/s10109-020-00336-0) -->
+<!--     [@bivand2021] -->
+
+
+# Exercice pratique
+
+\
+
+:::{.center .bigbis2}
+[**https://github.com/HuguesPecout/GeoExo_TAIS**](https://github.com/HuguesPecout/GeoExo_TAIS)
+
+\
+
+[![](img/project.png){width="20%"}]()
+
+**Téléchargez ce** [**projet Rstudio**](https://github.com/HuguesPecout/GeoExo_TAIS/archive/refs/heads/main.zip)
+:::   
+
+
+
+# Merci de votre attention {style="text-align: center"}
+
+\
+\
+\
+\
+
+::: {style="font-size: 1.5em; text-align: center"}
+{{< fa display >}} [Diaporama en ligne](https://tais-ehess-hpecout-bb467c23dd2ecba666035579bc786d99e7bb2c2b3553.gitpages.huma-num.fr/#/title-slide)
+
+\
+
+{{< fa code >}} [Code source](https://gitlab.huma-num.fr/hpecout/tais_ehess)
+
+\
+
+![](img/logo_by-sa.svg){width="10%"}\
+
+\
+
+:::
+
+::: footer
+
+<img src="img/geographie.png" width="80" style="margin-right:50px"/><img src="img/cnrs.png" width="80" style="margin-right:50px"/><img src="img/riate.png" width="150"/>
+:::
+
+## Bibliographie {.scrollable}
