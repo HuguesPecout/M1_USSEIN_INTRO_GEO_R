@@ -316,10 +316,10 @@ mtq <- st_read(dsn = "data/mtq.gpkg", layer = "mtq")
 </br>
 
 ::: {.bigone .center}
-**Les principaux formats de fichier sont pris en charge.**
+**Les principaux formats de fichiers sont pris en charge.**
 :::
 
-## Affichage des objets `sf`
+## Affichage des objets `sf`  {.scrollable}
 
 \
 
@@ -331,10 +331,22 @@ plot(mtq)
 ```
 
 ```{r sf_plot}
-#| fig-height: 2
+#| fig-height: 2.5
 #| nomar: true
 plot(st_geometry(mtq))
 ```
+
+
+```{r sf_plot2}
+#| fig-height: 3
+#| nomar: true
+
+# Avec le package mapsf
+library(mapsf)
+
+mf_map(mtq)
+```
+
 
 ## Manipulation et géotraitements avec `sf`
 
@@ -345,7 +357,7 @@ par les SIG. Exemples :
 :::
 
 -   Changement projection : `st_transform()`
--   Séléction attributaire : Similaire aux data.frame
+-   Séléction attributaire : *Similaire aux data.frame*
 -   Séléction spatiale : `st_filter()`
 -   Jointure spatiale : `st_join()`
 -   Calucl surface : `st_area()`
@@ -1675,7 +1687,7 @@ tm_polygons(fill = "STATUS")
 ## Couleurs et palettes {.scrollable}
 
 :::::: columns
-::: {.column width="49%"}
+::: {.column width="50%"}
 **De nombreuses palettes sont disponibles en R-base :**
 
 ```{r pal1}
@@ -1696,7 +1708,7 @@ hcl.colors(7, "YlOrRd")
 ```
 :::
 
-::: {.column width="2%"}
+::: {.column width="1%"}
 :::
 
 ::: {.column width="49%"}
@@ -2229,7 +2241,7 @@ R"***</center>
 
 <!--     [@bivand2021] -->
 
-# Exercice pratique
+# Démonstration
 
 \
 

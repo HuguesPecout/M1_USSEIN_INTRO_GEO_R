@@ -438,10 +438,10 @@ Projected CRS: WGS 84 / UTM zone 20N</code></pre>
 </div>
 <p><br></p>
 <div class="bigone center">
-<p><strong>Les principaux formats de fichier sont pris en charge.</strong></p>
+<p><strong>Les principaux formats de fichiers sont pris en charge.</strong></p>
 </div>
 </section>
-<section id="affichage-des-objets-sf" class="slide level2">
+<section id="affichage-des-objets-sf" class="slide level2 scrollable">
 <h2>Affichage des objets <code>sf</code></h2>
 <p><br>
 </p>
@@ -465,6 +465,19 @@ Projected CRS: WGS 84 / UTM zone 20N</code></pre>
 </div>
 </div>
 </div>
+<div class="cell" data-layout-align="center" data-nomar="true">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Avec le package mapsf</span></span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapsf)</span>
+<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figs/sf_plot2-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="manipulation-et-géotraitements-avec-sf" class="slide level2">
 <h2>Manipulation et géotraitements avec <code>sf</code></h2>
@@ -473,7 +486,7 @@ Projected CRS: WGS 84 / UTM zone 20N</code></pre>
 </div>
 <ul>
 <li>Changement projection : <code>st_transform()</code></li>
-<li>Séléction attributaire : Similaire aux data.frame</li>
+<li>Séléction attributaire : <em>Similaire aux data.frame</em></li>
 <li>Séléction spatiale : <code>st_filter()</code></li>
 <li>Jointure spatiale : <code>st_join()</code></li>
 <li>Calucl surface : <code>st_area()</code></li>
@@ -494,7 +507,7 @@ Projected CRS: WGS 84 / UTM zone 20N</code></pre>
 <p><br>
 </p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Coordinate Reference System:
   User input: WGS 84 / UTM zone 20N 
@@ -552,7 +565,7 @@ PROJCRS["WGS 84 / UTM zone 20N",
 </p>
 <p><strong>Transformation de la couche en projection</strong> <a href="https://epsg.io/2154"><strong><em>RGF93 v1 / Lambert-93</em></strong></a> :</p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_2154 <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(mtq, <span class="at">crs =</span> <span class="st">"EPSG:2154"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_2154 <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(mtq, <span class="at">crs =</span> <span class="st">"EPSG:2154"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 </p>
@@ -588,21 +601,21 @@ PROJCRS["WGS 84 / UTM zone 20N",
 <div class="columns">
 <div class="column center" style="width:45%;">
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># En R-base</span></span>
-<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_sel <span class="ot">&lt;-</span> mtq[mtq<span class="sc">$</span>POP <span class="sc">&lt;</span> <span class="dv">20000</span>, ]</span>
-<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_sel <span class="ot">&lt;-</span> <span class="fu">subset</span>(mtq, POP <span class="sc">&lt;</span> <span class="dv">20000</span>)</span>
-<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># En Tidyverse</span></span>
-<span id="cb10-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb10-8"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_sel <span class="ot">&lt;-</span> <span class="fu">filter</span>(mtq, POP <span class="sc">&lt;</span> <span class="dv">20000</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># En R-base</span></span>
+<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_sel <span class="ot">&lt;-</span> mtq[mtq<span class="sc">$</span>POP <span class="sc">&lt;</span> <span class="dv">20000</span>, ]</span>
+<span id="cb11-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_sel <span class="ot">&lt;-</span> <span class="fu">subset</span>(mtq, POP <span class="sc">&lt;</span> <span class="dv">20000</span>)</span>
+<span id="cb11-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># En Tidyverse</span></span>
+<span id="cb11-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb11-8"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_sel <span class="ot">&lt;-</span> <span class="fu">filter</span>(mtq, POP <span class="sc">&lt;</span> <span class="dv">20000</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column center" style="width:5%;">
 
 </div><div class="column center" style="width:50%;">
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq))</span>
-<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_sel), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq))</span>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_sel), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -618,14 +631,14 @@ PROJCRS["WGS 84 / UTM zone 20N",
 <p><br>
 </p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_centroid <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_centroid <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 </p>
 <p>Affichage :</p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq))</span>
-<span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_centroid), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq))</span>
+<span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_centroid), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="figs/sf_centro2-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
@@ -634,14 +647,14 @@ PROJCRS["WGS 84 / UTM zone 20N",
 <p><br>
 </p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_union <span class="ot">&lt;-</span> <span class="fu">st_union</span>(mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_union <span class="ot">&lt;-</span> <span class="fu">st_union</span>(mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 </p>
 <p>Affichage :</p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq))</span>
-<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_union), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">border =</span> <span class="st">"red"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq))</span>
+<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_union), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">border =</span> <span class="st">"red"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="figs/sf_agg2-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
@@ -650,14 +663,14 @@ PROJCRS["WGS 84 / UTM zone 20N",
 <p><br>
 </p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_buffer <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(<span class="at">x =</span> mtq_union, <span class="at">dist =</span> <span class="dv">5000</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_buffer <span class="ot">&lt;-</span> <span class="fu">st_buffer</span>(<span class="at">x =</span> mtq_union, <span class="at">dist =</span> <span class="dv">5000</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 </p>
 <p>Affichage :</p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_buffer), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">border =</span> <span class="st">"red"</span>)</span>
-<span id="cb17-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_union), <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_buffer), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">border =</span> <span class="st">"red"</span>)</span>
+<span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_union), <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="figs/sf_buff2-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
@@ -668,7 +681,7 @@ PROJCRS["WGS 84 / UTM zone 20N",
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_z <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(<span class="at">x =</span> mtq, <span class="at">y =</span> p)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_z <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(<span class="at">x =</span> mtq, <span class="at">y =</span> p)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center" data-nomar="true">
 <div class="cell-output-display">
@@ -689,7 +702,7 @@ PROJCRS["WGS 84 / UTM zone 20N",
 <p><span class="bigbis"><strong>→</strong></span></p>
 </div><div class="column" style="width:40%;">
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_z))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_z))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -707,9 +720,9 @@ PROJCRS["WGS 84 / UTM zone 20N",
 <div class="columns">
 <div class="column center" style="width:55%;">
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a>SelSpa <span class="ot">&lt;-</span> <span class="fu">st_filter</span>(<span class="at">x =</span> mtq, </span>
-<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> p, </span>
-<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">.predicate =</span> st_intersects)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a>SelSpa <span class="ot">&lt;-</span> <span class="fu">st_filter</span>(<span class="at">x =</span> mtq, </span>
+<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> p, </span>
+<span id="cb21-3"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">.predicate =</span> st_intersects)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center" data-nomar="true">
 <div class="cell-output-display">
@@ -724,8 +737,8 @@ PROJCRS["WGS 84 / UTM zone 20N",
 
 </div><div class="column center" style="width:40%;">
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq))</span>
-<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(SelSpa), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq))</span>
+<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(SelSpa), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -740,9 +753,9 @@ PROJCRS["WGS 84 / UTM zone 20N",
 <div class="columns">
 <div class="column center" style="width:55%;">
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a>SelSpa2 <span class="ot">&lt;-</span> <span class="fu">st_filter</span>(<span class="at">x =</span> mtq, </span>
-<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> p, </span>
-<span id="cb22-3"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">.predicate =</span> st_within)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a>SelSpa2 <span class="ot">&lt;-</span> <span class="fu">st_filter</span>(<span class="at">x =</span> mtq, </span>
+<span id="cb23-2"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="at">y =</span> p, </span>
+<span id="cb23-3"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">.predicate =</span> st_within)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center" data-nomar="true">
 <div class="cell-output-display">
@@ -757,8 +770,8 @@ PROJCRS["WGS 84 / UTM zone 20N",
 
 </div><div class="column center" style="width:40%;">
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq))</span>
-<span id="cb23-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(SelSpa2), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq))</span>
+<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(SelSpa2), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -776,8 +789,8 @@ PROJCRS["WGS 84 / UTM zone 20N",
 <div class="columns">
 <div class="column center" style="width:45%;">
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq<span class="sc">$</span>surface <span class="ot">&lt;-</span> <span class="fu">st_area</span>(mtq)</span>
-<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a>mtq<span class="sc">$</span>perimetre <span class="ot">&lt;-</span> <span class="fu">st_perimeter</span>(mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq<span class="sc">$</span>surface <span class="ot">&lt;-</span> <span class="fu">st_area</span>(mtq)</span>
+<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a>mtq<span class="sc">$</span>perimetre <span class="ot">&lt;-</span> <span class="fu">st_perimeter</span>(mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 </p>
@@ -791,16 +804,16 @@ PROJCRS["WGS 84 / UTM zone 20N",
 
 </div><div class="column center" style="width:53%;">
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="" aria-hidden="true" tabindex="-1"></a>mat_dist <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(<span class="at">x =</span> mtq_centroid, </span>
-<span id="cb25-2"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">y =</span> mtq_centroid)</span>
-<span id="cb25-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mat_dist) <span class="ot">&lt;-</span> mtq_centroid<span class="sc">$</span>INSEE_COM</span>
-<span id="cb25-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat_dist) <span class="ot">&lt;-</span> mtq_centroid<span class="sc">$</span>INSEE_COM</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a>mat_dist <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(<span class="at">x =</span> mtq_centroid, </span>
+<span id="cb26-2"><a href="" aria-hidden="true" tabindex="-1"></a>                        <span class="at">y =</span> mtq_centroid)</span>
+<span id="cb26-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mat_dist) <span class="ot">&lt;-</span> mtq_centroid<span class="sc">$</span>INSEE_COM</span>
+<span id="cb26-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat_dist) <span class="ot">&lt;-</span> mtq_centroid<span class="sc">$</span>INSEE_COM</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 </p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a>mat_dist[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a>mat_dist[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Units: [m]
           97201    97202     97203    97204
@@ -818,18 +831,18 @@ PROJCRS["WGS 84 / UTM zone 20N",
 <div class="column center" style="width:54%;">
 <p>Construction d’une grille régulière</p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_grid50 <span class="ot">&lt;-</span> <span class="fu">st_make_grid</span>(<span class="at">x =</span> mtq, </span>
-<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a>                           <span class="at">cellsize =</span> <span class="dv">2000</span>, </span>
-<span id="cb28-3"><a href="" aria-hidden="true" tabindex="-1"></a>                           <span class="at">square =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb28-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajout d'un identifiant unique</span></span>
-<span id="cb28-6"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_grid50 <span class="ot">&lt;-</span> <span class="fu">st_sf</span>(<span class="at">ID =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(mtq_grid50), </span>
-<span id="cb28-7"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">geom =</span> mtq_grid50)</span>
-<span id="cb28-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Affichage</span></span>
-<span id="cb28-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq))</span>
-<span id="cb28-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_centroid), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb28-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_grid50), <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_grid50 <span class="ot">&lt;-</span> <span class="fu">st_make_grid</span>(<span class="at">x =</span> mtq, </span>
+<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a>                           <span class="at">cellsize =</span> <span class="dv">2000</span>, </span>
+<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a>                           <span class="at">square =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb29-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajout d'un identifiant unique</span></span>
+<span id="cb29-6"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_grid50 <span class="ot">&lt;-</span> <span class="fu">st_sf</span>(<span class="at">ID =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(mtq_grid50), </span>
+<span id="cb29-7"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">geom =</span> mtq_grid50)</span>
+<span id="cb29-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Affichage</span></span>
+<span id="cb29-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq))</span>
+<span id="cb29-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_centroid), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb29-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_grid50), <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -843,14 +856,14 @@ PROJCRS["WGS 84 / UTM zone 20N",
 </div><div class="column center" style="width:45%;">
 <p>Compter des points dans des polygones</p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a>inter <span class="ot">&lt;-</span> <span class="fu">st_intersects</span>(<span class="at">x =</span> mtq_grid50,</span>
-<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> mtq_centroid, </span>
-<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sparse =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb29-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-5"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_grid50<span class="sc">$</span>nb_centroid <span class="ot">&lt;-</span> <span class="fu">lengths</span>(inter)</span>
-<span id="cb29-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Affichage</span></span>
-<span id="cb29-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mtq_grid50[<span class="st">"nb_centroid"</span>])</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a>inter <span class="ot">&lt;-</span> <span class="fu">st_intersects</span>(<span class="at">x =</span> mtq_grid50,</span>
+<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> mtq_centroid, </span>
+<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sparse =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb30-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_grid50<span class="sc">$</span>nb_centroid <span class="ot">&lt;-</span> <span class="fu">lengths</span>(inter)</span>
+<span id="cb30-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Affichage</span></span>
+<span id="cb30-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mtq_grid50[<span class="st">"nb_centroid"</span>])</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -866,12 +879,12 @@ PROJCRS["WGS 84 / UTM zone 20N",
 <p><br>
 </p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a>grid_centroid <span class="ot">&lt;-</span>  <span class="fu">st_join</span>(<span class="at">x =</span> mtq_grid50,</span>
-<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">y =</span> mtq_centroid,</span>
-<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">join =</span> st_intersects,</span>
-<span id="cb30-4"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">left =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb30-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-6"><a href="" aria-hidden="true" tabindex="-1"></a>grid_centroid</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a>grid_centroid <span class="ot">&lt;-</span>  <span class="fu">st_join</span>(<span class="at">x =</span> mtq_grid50,</span>
+<span id="cb31-2"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">y =</span> mtq_centroid,</span>
+<span id="cb31-3"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">join =</span> st_intersects,</span>
+<span id="cb31-4"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="at">left =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb31-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="" aria-hidden="true" tabindex="-1"></a>grid_centroid</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 34 features and 9 fields
 Geometry type: POLYGON
@@ -906,7 +919,7 @@ First 10 features:
 <p><br>
 </p>
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(grid_centroid[<span class="st">"STATUS"</span>])</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(grid_centroid[<span class="st">"STATUS"</span>])</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="figs/sf_join2-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><p><br>
@@ -920,22 +933,22 @@ First 10 features:
 <div class="columns">
 <div class="column center" style="width:50%;">
 <div class="cell" data-layout-align="center" data-nomar="true">
-<div class="sourceCode cell-code" id="cb33" data-code-line-numbers="1-10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>mtq_centroid <span class="sc">|&gt;</span> </span>
-<span id="cb33-2"><a href=""></a>  <span class="fu">st_union</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb33-3"><a href=""></a>  <span class="fu">st_voronoi</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb33-4"><a href=""></a>  <span class="fu">st_collection_extract</span>(<span class="st">"POLYGON"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb33-5"><a href=""></a>  <span class="fu">st_intersection</span>(mtq_union) <span class="sc">|&gt;</span> </span>
-<span id="cb33-6"><a href=""></a>  <span class="fu">st_sf</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb33-7"><a href=""></a>  <span class="fu">st_join</span>(mtq_centroid, st_intersects) <span class="sc">|&gt;</span></span>
-<span id="cb33-8"><a href=""></a>  <span class="fu">st_cast</span>(<span class="st">"MULTIPOLYGON"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb33-9"><a href=""></a>  <span class="fu">st_geometry</span>() <span class="sc">|&gt;</span></span>
-<span id="cb33-10"><a href=""></a>  <span class="fu">plot</span>(<span class="at">col =</span> <span class="st">"ivory4"</span>) </span>
-<span id="cb33-11"><a href=""></a></span>
-<span id="cb33-12"><a href=""></a><span class="co"># Affichage des centroides</span></span>
-<span id="cb33-13"><a href=""></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_centroid), </span>
-<span id="cb33-14"><a href=""></a>     <span class="at">col =</span> <span class="st">"red"</span>, </span>
-<span id="cb33-15"><a href=""></a>     <span class="at">pch =</span> <span class="dv">20</span>, </span>
-<span id="cb33-16"><a href=""></a>     <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34" data-code-line-numbers="1-10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a>mtq_centroid <span class="sc">|&gt;</span> </span>
+<span id="cb34-2"><a href=""></a>  <span class="fu">st_union</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb34-3"><a href=""></a>  <span class="fu">st_voronoi</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb34-4"><a href=""></a>  <span class="fu">st_collection_extract</span>(<span class="st">"POLYGON"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb34-5"><a href=""></a>  <span class="fu">st_intersection</span>(mtq_union) <span class="sc">|&gt;</span> </span>
+<span id="cb34-6"><a href=""></a>  <span class="fu">st_sf</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb34-7"><a href=""></a>  <span class="fu">st_join</span>(mtq_centroid, st_intersects) <span class="sc">|&gt;</span></span>
+<span id="cb34-8"><a href=""></a>  <span class="fu">st_cast</span>(<span class="st">"MULTIPOLYGON"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb34-9"><a href=""></a>  <span class="fu">st_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb34-10"><a href=""></a>  <span class="fu">plot</span>(<span class="at">col =</span> <span class="st">"ivory4"</span>) </span>
+<span id="cb34-11"><a href=""></a></span>
+<span id="cb34-12"><a href=""></a><span class="co"># Affichage des centroides</span></span>
+<span id="cb34-13"><a href=""></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_centroid), </span>
+<span id="cb34-14"><a href=""></a>     <span class="at">col =</span> <span class="st">"red"</span>, </span>
+<span id="cb34-15"><a href=""></a>     <span class="at">pch =</span> <span class="dv">20</span>, </span>
+<span id="cb34-16"><a href=""></a>     <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column center" style="width:10%;">
 
@@ -984,7 +997,7 @@ First 10 features:
 <section id="import-de-données" class="slide level2">
 <h2>Import de données</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>terra 1.8.21</code></pre>
 </div>
@@ -995,9 +1008,9 @@ First 10 features:
 <div class="column center" style="width:45%;">
 <p><strong>Données RASTER (<code>SpatRaster</code>)</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt_raw <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/altitude.tif"</span>) </span>
-<span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-3"><a href="" aria-hidden="true" tabindex="-1"></a>alt_raw</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt_raw <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/altitude.tif"</span>) </span>
+<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="" aria-hidden="true" tabindex="-1"></a>alt_raw</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>class       : SpatRaster 
 dimensions  : 86, 125, 1  (nrow, ncol, nlyr)
@@ -1015,9 +1028,9 @@ max value   : 735.98517 </code></pre>
 </div><div class="column center" style="width:53%;">
 <p><strong>Données vectorielles (<code>SpatVector</code>)</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a>com <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="st">"data/com46.gpkg"</span>, <span class="at">layer=</span><span class="st">"com"</span>)</span>
-<span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-3"><a href="" aria-hidden="true" tabindex="-1"></a>com</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a>com <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="st">"data/com46.gpkg"</span>, <span class="at">layer=</span><span class="st">"com"</span>)</span>
+<span id="cb39-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="" aria-hidden="true" tabindex="-1"></a>com</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> class       : SpatVector 
  geometry    : polygons 
@@ -1047,9 +1060,9 @@ max value   : 735.98517 </code></pre>
 <div class="column center" style="width:45%;">
 <p><strong>Données RASTER</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt_raw <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/altitude.tif"</span>) </span>
-<span id="cb40-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(alt_raw)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt_raw <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"data/altitude.tif"</span>) </span>
+<span id="cb41-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(alt_raw)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1063,9 +1076,9 @@ max value   : 735.98517 </code></pre>
 </div><div class="column center" style="width:53%;">
 <p><strong>Données vectorielles</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a>com <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="st">"data/com46.gpkg"</span>, <span class="at">layer=</span><span class="st">"com"</span>)</span>
-<span id="cb41-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(com)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a>com <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="st">"data/com46.gpkg"</span>, <span class="at">layer=</span><span class="st">"com"</span>)</span>
+<span id="cb42-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(com)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1081,7 +1094,7 @@ max value   : 735.98517 </code></pre>
 <p><br>
 </p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt_2154 <span class="ot">&lt;-</span> <span class="fu">project</span>(<span class="at">x =</span> alt_raw, <span class="at">y =</span> <span class="st">"EPSG:2154"</span>, <span class="at">method =</span> <span class="st">"bilinear"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt_2154 <span class="ot">&lt;-</span> <span class="fu">project</span>(<span class="at">x =</span> alt_raw, <span class="at">y =</span> <span class="st">"EPSG:2154"</span>, <span class="at">method =</span> <span class="st">"bilinear"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 </p>
@@ -1089,7 +1102,7 @@ max value   : 735.98517 </code></pre>
 <div class="column center" style="width:50%;">
 <p><span class="colour"><strong>alt_raw</strong> (WGS 84)</span></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(alt_raw)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(alt_raw)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1101,7 +1114,7 @@ max value   : 735.98517 </code></pre>
 </div><div class="column center" style="width:50%;">
 <p><span class="colour"><strong>alt_2154</strong> (RGF93 v1 / Lambert-93)</span></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(alt_2154)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(alt_2154)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1117,14 +1130,14 @@ max value   : 735.98517 </code></pre>
 <div class="columns">
 <div class="column center" style="width:49%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb45" data-code-line-numbers="4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a>cahors <span class="ot">&lt;-</span> <span class="fu">subset</span>(com, com<span class="sc">$</span>INSEE_COM <span class="sc">==</span> <span class="st">"46042"</span>) </span>
-<span id="cb45-2"><a href=""></a></span>
-<span id="cb45-3"><a href=""></a><span class="co"># Crop sur la commune de Cahors</span></span>
-<span id="cb45-4"><a href=""></a>crop_cahors <span class="ot">&lt;-</span> <span class="fu">crop</span>(alt_2154, cahors)</span>
-<span id="cb45-5"><a href=""></a></span>
-<span id="cb45-6"><a href=""></a><span class="co"># Affichage</span></span>
-<span id="cb45-7"><a href=""></a><span class="fu">plot</span>(crop_cahors)</span>
-<span id="cb45-8"><a href=""></a><span class="fu">plot</span>(cahors, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46" data-code-line-numbers="4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a>cahors <span class="ot">&lt;-</span> <span class="fu">subset</span>(com, com<span class="sc">$</span>INSEE_COM <span class="sc">==</span> <span class="st">"46042"</span>) </span>
+<span id="cb46-2"><a href=""></a></span>
+<span id="cb46-3"><a href=""></a><span class="co"># Crop sur la commune de Cahors</span></span>
+<span id="cb46-4"><a href=""></a>crop_cahors <span class="ot">&lt;-</span> <span class="fu">crop</span>(alt_2154, cahors)</span>
+<span id="cb46-5"><a href=""></a></span>
+<span id="cb46-6"><a href=""></a><span class="co"># Affichage</span></span>
+<span id="cb46-7"><a href=""></a><span class="fu">plot</span>(crop_cahors)</span>
+<span id="cb46-8"><a href=""></a><span class="fu">plot</span>(cahors, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1137,12 +1150,12 @@ max value   : 735.98517 </code></pre>
 
 </div><div class="column center" style="width:49%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb46" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a><span class="co"># Mask sur la commune de Cahors</span></span>
-<span id="cb46-2"><a href=""></a>alt_mask <span class="ot">&lt;-</span> <span class="fu">mask</span>(crop_cahors, cahors)</span>
-<span id="cb46-3"><a href=""></a></span>
-<span id="cb46-4"><a href=""></a><span class="co"># Affichage</span></span>
-<span id="cb46-5"><a href=""></a><span class="fu">plot</span>(alt_mask)</span>
-<span id="cb46-6"><a href=""></a><span class="fu">plot</span>(cahors, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a><span class="co"># Mask sur la commune de Cahors</span></span>
+<span id="cb47-2"><a href=""></a>alt_mask <span class="ot">&lt;-</span> <span class="fu">mask</span>(crop_cahors, cahors)</span>
+<span id="cb47-3"><a href=""></a></span>
+<span id="cb47-4"><a href=""></a><span class="co"># Affichage</span></span>
+<span id="cb47-5"><a href=""></a><span class="fu">plot</span>(alt_mask)</span>
+<span id="cb47-6"><a href=""></a><span class="fu">plot</span>(cahors, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1166,21 +1179,21 @@ max value   : 735.98517 </code></pre>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb47" data-code-line-numbers="1-2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a><span class="co"># merge_raster &lt;- merge(crop_cahors, </span></span>
-<span id="cb47-2"><a href=""></a><span class="co">#                       crop_bellefont)</span></span>
-<span id="cb47-3"><a href=""></a></span>
-<span id="cb47-4"><a href=""></a><span class="co"># plot(merge_raster)</span></span>
-<span id="cb47-5"><a href=""></a><span class="co"># plot(bellefont, add = TRUE)</span></span>
-<span id="cb47-6"><a href=""></a><span class="co"># plot(cahors, add = TRUE)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48" data-code-line-numbers="1-2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="co"># merge_raster &lt;- merge(crop_cahors, </span></span>
+<span id="cb48-2"><a href=""></a><span class="co">#                       crop_bellefont)</span></span>
+<span id="cb48-3"><a href=""></a></span>
+<span id="cb48-4"><a href=""></a><span class="co"># plot(merge_raster)</span></span>
+<span id="cb48-5"><a href=""></a><span class="co"># plot(bellefont, add = TRUE)</span></span>
+<span id="cb48-6"><a href=""></a><span class="co"># plot(cahors, add = TRUE)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb48" data-code-line-numbers="1-2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="co"># mosaic_raster &lt;- mosaic(crop_cahors, </span></span>
-<span id="cb48-2"><a href=""></a><span class="co">#                         crop_bellefont)</span></span>
-<span id="cb48-3"><a href=""></a></span>
-<span id="cb48-4"><a href=""></a><span class="co"># plot(mosaic_raster)</span></span>
-<span id="cb48-5"><a href=""></a><span class="co"># plot(bellefont, add = TRUE)</span></span>
-<span id="cb48-6"><a href=""></a><span class="co"># plot(cahors, add = TRUE)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49" data-code-line-numbers="1-2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a><span class="co"># mosaic_raster &lt;- mosaic(crop_cahors, </span></span>
+<span id="cb49-2"><a href=""></a><span class="co">#                         crop_bellefont)</span></span>
+<span id="cb49-3"><a href=""></a></span>
+<span id="cb49-4"><a href=""></a><span class="co"># plot(mosaic_raster)</span></span>
+<span id="cb49-5"><a href=""></a><span class="co"># plot(bellefont, add = TRUE)</span></span>
+<span id="cb49-6"><a href=""></a><span class="co"># plot(cahors, add = TRUE)</span></span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div></div>
 </section>
@@ -1190,11 +1203,11 @@ max value   : 735.98517 </code></pre>
 <div class="column" style="width:49%;">
 <p>Extraction en fonction d’une couche vectorielle.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb49" data-code-line-numbers="1-3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a>stat_by_com <span class="ot">&lt;-</span> <span class="fu">extract</span>(alt_2154, </span>
-<span id="cb49-2"><a href=""></a>                       com, </span>
-<span id="cb49-3"><a href=""></a>                       <span class="at">fun =</span> <span class="st">"mean"</span>)</span>
-<span id="cb49-4"><a href=""></a></span>
-<span id="cb49-5"><a href=""></a><span class="fu">head</span>(stat_by_com)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50" data-code-line-numbers="1-3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a>stat_by_com <span class="ot">&lt;-</span> <span class="fu">extract</span>(alt_2154, </span>
+<span id="cb50-2"><a href=""></a>                       com, </span>
+<span id="cb50-3"><a href=""></a>                       <span class="at">fun =</span> <span class="st">"mean"</span>)</span>
+<span id="cb50-4"><a href=""></a></span>
+<span id="cb50-5"><a href=""></a><span class="fu">head</span>(stat_by_com)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  ID altitude
 1  1 200.5672
@@ -1210,10 +1223,10 @@ max value   : 735.98517 </code></pre>
 </div><div class="column" style="width:49%;">
 <p>Cartographie des résultats.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a>com<span class="sc">$</span>alt_mean <span class="ot">&lt;-</span> stat_by_com[,<span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb51-2"><a href=""></a></span>
-<span id="cb51-3"><a href=""></a><span class="fu">plot</span>(com, <span class="st">"alt_mean"</span>, </span>
-<span id="cb51-4"><a href=""></a>     <span class="at">col=</span><span class="fu">terrain.colors</span>(<span class="dv">5</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a>com<span class="sc">$</span>alt_mean <span class="ot">&lt;-</span> stat_by_com[,<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb52-2"><a href=""></a></span>
+<span id="cb52-3"><a href=""></a><span class="fu">plot</span>(com, <span class="st">"alt_mean"</span>, </span>
+<span id="cb52-4"><a href=""></a>     <span class="at">col=</span><span class="fu">terrain.colors</span>(<span class="dv">5</span>))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1228,7 +1241,7 @@ max value   : 735.98517 </code></pre>
 <h2>Agrégation &amp; désagrégation</h2>
 <p>Afficher la résolution d’un raster</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">res</span>(alt_2154) </span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">res</span>(alt_2154) </span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 907.4734 907.4734</code></pre>
 </div>
@@ -1237,12 +1250,12 @@ max value   : 735.98517 </code></pre>
 </p>
 <p>Créer une grille de même étendue, puis en diminuer la résolution spatiale (plus grosses cellules)</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt_lower_model  <span class="ot">&lt;-</span> alt_2154</span>
-<span id="cb54-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Tailles des cellules = 1000 mètres</span></span>
-<span id="cb54-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">res</span>(alt_lower_model) <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb54-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-6"><a href="" aria-hidden="true" tabindex="-1"></a>alt_lower_model</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt_lower_model  <span class="ot">&lt;-</span> alt_2154</span>
+<span id="cb55-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Tailles des cellules = 1000 mètres</span></span>
+<span id="cb55-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">res</span>(alt_lower_model) <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb55-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-6"><a href="" aria-hidden="true" tabindex="-1"></a>alt_lower_model</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>class       : SpatRaster 
 dimensions  : 49, 50, 1  (nrow, ncol, nlyr)
@@ -1255,15 +1268,15 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 </p>
 <p>La fonction resample() permet de ré-échantillonner les valeurs de départ dans la nouvelle résolution spatiale. Plusieurs méthodes de ré-échantillonnage sont disponibles</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt_lower <span class="ot">&lt;-</span> <span class="fu">resample</span>(<span class="at">x =</span> alt_2154,</span>
-<span id="cb56-2"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">y =</span> alt_lower_model, </span>
-<span id="cb56-3"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">method =</span> <span class="st">"bilinear"</span>) </span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt_lower <span class="ot">&lt;-</span> <span class="fu">resample</span>(<span class="at">x =</span> alt_2154,</span>
+<span id="cb57-2"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">y =</span> alt_lower_model, </span>
+<span id="cb57-3"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">method =</span> <span class="st">"bilinear"</span>) </span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 </p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(alt_lower, </span>
-<span id="cb57-2"><a href="" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"cellsize = 1000m - ré-échantillonnage bilinéaire"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(alt_lower, </span>
+<span id="cb58-2"><a href="" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"cellsize = 1000m - ré-échantillonnage bilinéaire"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="figs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
@@ -1297,9 +1310,9 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <p><br>
 </p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_terra <span class="ot">&lt;-</span> <span class="fu">vect</span>(mtq)</span>
-<span id="cb58-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mtq_terra)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_terra <span class="ot">&lt;-</span> <span class="fu">vect</span>(mtq)</span>
+<span id="cb59-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mtq_terra)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1317,9 +1330,9 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <p><br>
 </p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(mtq_terra)</span>
-<span id="cb59-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_sf))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="" aria-hidden="true" tabindex="-1"></a>mtq_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(mtq_terra)</span>
+<span id="cb60-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mtq_sf))</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1375,21 +1388,21 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <div class="columns">
 <div class="column" style="width:65%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
-<span id="cb60-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Conversion du semi de point en objet "ppp"</span></span>
-<span id="cb60-4"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(<span class="at">X =</span> <span class="fu">st_coordinates</span>(semis_points), </span>
-<span id="cb60-5"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">W =</span> <span class="fu">as.owin</span>(<span class="fu">st_bbox</span>(semis_points)))</span>
-<span id="cb60-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcul de la densité (KDE)</span></span>
-<span id="cb60-8"><a href="" aria-hidden="true" tabindex="-1"></a>ds <span class="ot">&lt;-</span> <span class="fu">density.ppp</span>(<span class="at">x =</span> p, </span>
-<span id="cb60-9"><a href="" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sigma =</span> <span class="dv">50</span>, </span>
-<span id="cb60-10"><a href="" aria-hidden="true" tabindex="-1"></a>                  <span class="at">eps =</span> <span class="dv">10</span>, </span>
-<span id="cb60-11"><a href="" aria-hidden="true" tabindex="-1"></a>                  <span class="at">positive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat)</span>
+<span id="cb61-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Conversion du semi de point en objet "ppp"</span></span>
+<span id="cb61-4"><a href="" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">as.ppp</span>(<span class="at">X =</span> <span class="fu">st_coordinates</span>(semis_points), </span>
+<span id="cb61-5"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">W =</span> <span class="fu">as.owin</span>(<span class="fu">st_bbox</span>(semis_points)))</span>
+<span id="cb61-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcul de la densité (KDE)</span></span>
+<span id="cb61-8"><a href="" aria-hidden="true" tabindex="-1"></a>ds <span class="ot">&lt;-</span> <span class="fu">density.ppp</span>(<span class="at">x =</span> p, </span>
+<span id="cb61-9"><a href="" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sigma =</span> <span class="dv">50</span>, </span>
+<span id="cb61-10"><a href="" aria-hidden="true" tabindex="-1"></a>                  <span class="at">eps =</span> <span class="dv">10</span>, </span>
+<span id="cb61-11"><a href="" aria-hidden="true" tabindex="-1"></a>                  <span class="at">positive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:35%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ds)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ds)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1409,17 +1422,17 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <div class="columns">
 <div class="column" style="width:65%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb62-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># densité en restaurants / hectares</span></span>
-<span id="cb62-4"><a href="" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(ds) <span class="sc">*</span> <span class="dv">100</span> <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb62-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Assignation de la projection</span></span>
-<span id="cb62-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">crs</span>(r) <span class="ot">&lt;-</span> <span class="fu">st_crs</span>(semis_points)<span class="sc">$</span>wkt</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb63-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># densité en restaurants / hectares</span></span>
+<span id="cb63-4"><a href="" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(ds) <span class="sc">*</span> <span class="dv">100</span> <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb63-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Assignation de la projection</span></span>
+<span id="cb63-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">crs</span>(r) <span class="ot">&lt;-</span> <span class="fu">st_crs</span>(semis_points)<span class="sc">$</span>wkt</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:35%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(r)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1439,23 +1452,23 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <div class="columns">
 <div class="column" style="width:55%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapiso)</span>
-<span id="cb64-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Limites des classes</span></span>
-<span id="cb64-4"><a href="" aria-hidden="true" tabindex="-1"></a>bks <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="fu">max</span>(<span class="fu">values</span>(r)))</span>
-<span id="cb64-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Transformation du raster en polygones</span></span>
-<span id="cb64-7"><a href="" aria-hidden="true" tabindex="-1"></a>iso_dens <span class="ot">&lt;-</span> <span class="fu">mapiso</span>(r, <span class="at">breaks =</span> bks)</span>
-<span id="cb64-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Suppression de la première classe ([0, 1[)</span></span>
-<span id="cb64-10"><a href="" aria-hidden="true" tabindex="-1"></a>iso_dens <span class="ot">&lt;-</span> iso_dens[<span class="sc">-</span><span class="dv">1</span>, ]</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapiso)</span>
+<span id="cb65-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Limites des classes</span></span>
+<span id="cb65-4"><a href="" aria-hidden="true" tabindex="-1"></a>bks <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="fu">max</span>(<span class="fu">values</span>(r)))</span>
+<span id="cb65-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Transformation du raster en polygones</span></span>
+<span id="cb65-7"><a href="" aria-hidden="true" tabindex="-1"></a>iso_dens <span class="ot">&lt;-</span> <span class="fu">mapiso</span>(r, <span class="at">breaks =</span> bks)</span>
+<span id="cb65-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Suppression de la première classe ([0, 1[)</span></span>
+<span id="cb65-10"><a href="" aria-hidden="true" tabindex="-1"></a>iso_dens <span class="ot">&lt;-</span> iso_dens[<span class="sc">-</span><span class="dv">1</span>, ]</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:45%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapsf)</span>
-<span id="cb65-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(iso_dens, <span class="at">var=</span><span class="st">"isomin"</span>, </span>
-<span id="cb65-4"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">type =</span> <span class="st">"choro"</span>, <span class="at">nbreaks =</span> <span class="dv">7</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapsf)</span>
+<span id="cb66-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(iso_dens, <span class="at">var=</span><span class="st">"isomin"</span>, </span>
+<span id="cb66-4"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">type =</span> <span class="st">"choro"</span>, <span class="at">nbreaks =</span> <span class="dv">7</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1529,7 +1542,7 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 </div><div class="column" style="width:35%;">
 <p><code>mf_map()</code> est la fonction principale.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(<span class="at">x =</span> mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(<span class="at">x =</span> mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1539,9 +1552,9 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(<span class="at">x =</span> mtq, </span>
-<span id="cb67-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">var =</span> <span class="st">"STATUS"</span>, </span>
-<span id="cb67-3"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">type =</span> <span class="st">"typo"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(<span class="at">x =</span> mtq, </span>
+<span id="cb68-2"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">var =</span> <span class="st">"STATUS"</span>, </span>
+<span id="cb68-3"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">type =</span> <span class="st">"typo"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1556,13 +1569,13 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <h2>Utilisation simple</h2>
 <div class="cell columns column-output-location" data-layout-align="center">
 <div class="column">
-<div class="sourceCode cell-code" id="cb68" data-code-line-numbers="1-1|3-4|6-7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href=""></a><span class="fu">library</span>(mapsf)</span>
-<span id="cb68-2"><a href=""></a></span>
-<span id="cb68-3"><a href=""></a><span class="co"># Import données exemple</span></span>
-<span id="cb68-4"><a href=""></a>mtq <span class="ot">&lt;-</span> <span class="fu">mf_get_mtq</span>()</span>
-<span id="cb68-5"><a href=""></a></span>
-<span id="cb68-6"><a href=""></a><span class="co"># Affichage de l'objet sf</span></span>
-<span id="cb68-7"><a href=""></a><span class="fu">mf_map</span>(<span class="at">x =</span> mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69" data-code-line-numbers="1-1|3-4|6-7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href=""></a><span class="fu">library</span>(mapsf)</span>
+<span id="cb69-2"><a href=""></a></span>
+<span id="cb69-3"><a href=""></a><span class="co"># Import données exemple</span></span>
+<span id="cb69-4"><a href=""></a>mtq <span class="ot">&lt;-</span> <span class="fu">mf_get_mtq</span>()</span>
+<span id="cb69-5"><a href=""></a></span>
+<span id="cb69-6"><a href=""></a><span class="co"># Affichage de l'objet sf</span></span>
+<span id="cb69-7"><a href=""></a><span class="fu">mf_map</span>(<span class="at">x =</span> mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1577,21 +1590,21 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <h2>Utilisation simple</h2>
 <div class="cell columns column-output-location" data-layout-align="center">
 <div class="column">
-<div class="sourceCode cell-code" id="cb69" data-code-line-numbers="9-15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href=""></a><span class="fu">library</span>(mapsf)</span>
-<span id="cb69-2"><a href=""></a></span>
-<span id="cb69-3"><a href=""></a><span class="co"># Import données exemple</span></span>
-<span id="cb69-4"><a href=""></a>mtq <span class="ot">&lt;-</span> <span class="fu">mf_get_mtq</span>()</span>
-<span id="cb69-5"><a href=""></a></span>
-<span id="cb69-6"><a href=""></a><span class="co"># Affichage de l'objet sf</span></span>
-<span id="cb69-7"><a href=""></a><span class="fu">mf_map</span>(<span class="at">x =</span> mtq)</span>
-<span id="cb69-8"><a href=""></a></span>
-<span id="cb69-9"><a href=""></a><span class="co"># Carte en symbols proportionnels</span></span>
-<span id="cb69-10"><a href=""></a><span class="fu">mf_map</span>(</span>
-<span id="cb69-11"><a href=""></a>  <span class="at">x =</span> mtq,</span>
-<span id="cb69-12"><a href=""></a>  <span class="at">var =</span> <span class="st">"POP"</span>,</span>
-<span id="cb69-13"><a href=""></a>  <span class="at">type =</span> <span class="st">"prop"</span>, </span>
-<span id="cb69-14"><a href=""></a>  <span class="at">leg_title =</span> <span class="st">"Population"</span></span>
-<span id="cb69-15"><a href=""></a>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70" data-code-line-numbers="9-15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href=""></a><span class="fu">library</span>(mapsf)</span>
+<span id="cb70-2"><a href=""></a></span>
+<span id="cb70-3"><a href=""></a><span class="co"># Import données exemple</span></span>
+<span id="cb70-4"><a href=""></a>mtq <span class="ot">&lt;-</span> <span class="fu">mf_get_mtq</span>()</span>
+<span id="cb70-5"><a href=""></a></span>
+<span id="cb70-6"><a href=""></a><span class="co"># Affichage de l'objet sf</span></span>
+<span id="cb70-7"><a href=""></a><span class="fu">mf_map</span>(<span class="at">x =</span> mtq)</span>
+<span id="cb70-8"><a href=""></a></span>
+<span id="cb70-9"><a href=""></a><span class="co"># Carte en symbols proportionnels</span></span>
+<span id="cb70-10"><a href=""></a><span class="fu">mf_map</span>(</span>
+<span id="cb70-11"><a href=""></a>  <span class="at">x =</span> mtq,</span>
+<span id="cb70-12"><a href=""></a>  <span class="at">var =</span> <span class="st">"POP"</span>,</span>
+<span id="cb70-13"><a href=""></a>  <span class="at">type =</span> <span class="st">"prop"</span>, </span>
+<span id="cb70-14"><a href=""></a>  <span class="at">leg_title =</span> <span class="st">"Population"</span></span>
+<span id="cb70-15"><a href=""></a>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1606,29 +1619,29 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <h2>Utilisation simple</h2>
 <div class="cell columns column-output-location" data-layout-align="center">
 <div class="column">
-<div class="sourceCode cell-code" id="cb70" data-code-line-numbers="16-23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href=""></a><span class="fu">library</span>(mapsf)</span>
-<span id="cb70-2"><a href=""></a><span class="co"># Import données exemple</span></span>
-<span id="cb70-3"><a href=""></a>mtq <span class="ot">&lt;-</span> <span class="fu">mf_get_mtq</span>()</span>
-<span id="cb70-4"><a href=""></a></span>
-<span id="cb70-5"><a href=""></a><span class="co"># Affichage de l'objet sf</span></span>
-<span id="cb70-6"><a href=""></a><span class="fu">mf_map</span>(<span class="at">x =</span> mtq)</span>
-<span id="cb70-7"><a href=""></a></span>
-<span id="cb70-8"><a href=""></a><span class="co"># Carte en symbols proportionnels</span></span>
-<span id="cb70-9"><a href=""></a><span class="fu">mf_map</span>(</span>
-<span id="cb70-10"><a href=""></a>  <span class="at">x =</span> mtq,</span>
-<span id="cb70-11"><a href=""></a>  <span class="at">var =</span> <span class="st">"POP"</span>,</span>
-<span id="cb70-12"><a href=""></a>  <span class="at">type =</span> <span class="st">"prop"</span>, </span>
-<span id="cb70-13"><a href=""></a>  <span class="at">leg_title =</span> <span class="st">"Population"</span></span>
-<span id="cb70-14"><a href=""></a>)</span>
-<span id="cb70-15"><a href=""></a></span>
-<span id="cb70-16"><a href=""></a><span class="co"># Ajout éléments de mise en page</span></span>
-<span id="cb70-17"><a href=""></a><span class="fu">mf_layout</span>(</span>
-<span id="cb70-18"><a href=""></a>  <span class="at">title =</span> <span class="st">"Population in Martinique"</span>, </span>
-<span id="cb70-19"><a href=""></a>  <span class="at">credits =</span> </span>
-<span id="cb70-20"><a href=""></a>    <span class="fu">paste0</span>(<span class="st">"T. Giraud;"</span>,  </span>
-<span id="cb70-21"><a href=""></a>           <span class="st">"Sources: INSEE &amp; IGN, 2018"</span></span>
-<span id="cb70-22"><a href=""></a>    )</span>
-<span id="cb70-23"><a href=""></a>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71" data-code-line-numbers="16-23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href=""></a><span class="fu">library</span>(mapsf)</span>
+<span id="cb71-2"><a href=""></a><span class="co"># Import données exemple</span></span>
+<span id="cb71-3"><a href=""></a>mtq <span class="ot">&lt;-</span> <span class="fu">mf_get_mtq</span>()</span>
+<span id="cb71-4"><a href=""></a></span>
+<span id="cb71-5"><a href=""></a><span class="co"># Affichage de l'objet sf</span></span>
+<span id="cb71-6"><a href=""></a><span class="fu">mf_map</span>(<span class="at">x =</span> mtq)</span>
+<span id="cb71-7"><a href=""></a></span>
+<span id="cb71-8"><a href=""></a><span class="co"># Carte en symbols proportionnels</span></span>
+<span id="cb71-9"><a href=""></a><span class="fu">mf_map</span>(</span>
+<span id="cb71-10"><a href=""></a>  <span class="at">x =</span> mtq,</span>
+<span id="cb71-11"><a href=""></a>  <span class="at">var =</span> <span class="st">"POP"</span>,</span>
+<span id="cb71-12"><a href=""></a>  <span class="at">type =</span> <span class="st">"prop"</span>, </span>
+<span id="cb71-13"><a href=""></a>  <span class="at">leg_title =</span> <span class="st">"Population"</span></span>
+<span id="cb71-14"><a href=""></a>)</span>
+<span id="cb71-15"><a href=""></a></span>
+<span id="cb71-16"><a href=""></a><span class="co"># Ajout éléments de mise en page</span></span>
+<span id="cb71-17"><a href=""></a><span class="fu">mf_layout</span>(</span>
+<span id="cb71-18"><a href=""></a>  <span class="at">title =</span> <span class="st">"Population in Martinique"</span>, </span>
+<span id="cb71-19"><a href=""></a>  <span class="at">credits =</span> </span>
+<span id="cb71-20"><a href=""></a>    <span class="fu">paste0</span>(<span class="st">"T. Giraud;"</span>,  </span>
+<span id="cb71-21"><a href=""></a>           <span class="st">"Sources: INSEE &amp; IGN, 2018"</span></span>
+<span id="cb71-22"><a href=""></a>    )</span>
+<span id="cb71-23"><a href=""></a>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1645,37 +1658,37 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <div class="column" style="width:40%;">
 <p><small></small></p><small>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-overflow-scroll code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(<span class="st">"agolalight"</span>, <span class="at">bg =</span> <span class="st">"ivory1"</span>)</span>
-<span id="cb71-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_export</span>(<span class="at">x =</span> mtq, <span class="at">filename =</span> <span class="st">"img/mtq.png"</span>,</span>
-<span id="cb71-4"><a href="" aria-hidden="true" tabindex="-1"></a>          <span class="at">width =</span> <span class="dv">600</span>, <span class="at">res =</span> <span class="dv">120</span>,</span>
-<span id="cb71-5"><a href="" aria-hidden="true" tabindex="-1"></a>          <span class="at">expandBB =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, .<span class="dv">3</span>))</span>
-<span id="cb71-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_shadow</span>(mtq, <span class="at">col =</span> <span class="st">"grey90"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb71-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(<span class="at">x =</span> mtq, <span class="at">var =</span> <span class="st">"MED"</span>, <span class="at">type =</span> <span class="st">"choro"</span>,</span>
-<span id="cb71-10"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">pal =</span> <span class="st">"Dark Mint"</span>,</span>
-<span id="cb71-11"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">breaks =</span> <span class="st">"quantile"</span>,</span>
-<span id="cb71-12"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">nbreaks =</span> <span class="dv">6</span>,</span>
-<span id="cb71-13"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_title =</span> <span class="st">"Median Income</span><span class="sc">\n</span><span class="st">(euros)"</span>,</span>
-<span id="cb71-14"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_val_rnd =</span> <span class="sc">-</span><span class="dv">2</span>,</span>
-<span id="cb71-15"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb71-16"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-17"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_on</span>(<span class="at">x =</span> <span class="st">"worldmap"</span>, <span class="at">pos =</span> <span class="st">"right"</span>)</span>
-<span id="cb71-18"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-19"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_worldmap</span>(mtq, <span class="at">col =</span> <span class="st">"#0E3F5C"</span>)</span>
-<span id="cb71-20"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-21"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_off</span>()</span>
-<span id="cb71-22"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-23"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Wealth in Martinique, 2015"</span>)</span>
-<span id="cb71-24"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-25"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_credits</span>(<span class="st">"T. Giraud</span><span class="sc">\n</span><span class="st">Sources: INSEE &amp; IGN, 2018"</span>)</span>
-<span id="cb71-26"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-27"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_scale</span>(<span class="at">size =</span> <span class="dv">5</span>)</span>
-<span id="cb71-28"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-29"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_arrow</span>(<span class="st">"topleft"</span>)</span>
-<span id="cb71-30"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-31"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-overflow-scroll code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(<span class="st">"agolalight"</span>, <span class="at">bg =</span> <span class="st">"ivory1"</span>)</span>
+<span id="cb72-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_export</span>(<span class="at">x =</span> mtq, <span class="at">filename =</span> <span class="st">"img/mtq.png"</span>,</span>
+<span id="cb72-4"><a href="" aria-hidden="true" tabindex="-1"></a>          <span class="at">width =</span> <span class="dv">600</span>, <span class="at">res =</span> <span class="dv">120</span>,</span>
+<span id="cb72-5"><a href="" aria-hidden="true" tabindex="-1"></a>          <span class="at">expandBB =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, .<span class="dv">3</span>))</span>
+<span id="cb72-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_shadow</span>(mtq, <span class="at">col =</span> <span class="st">"grey90"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb72-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(<span class="at">x =</span> mtq, <span class="at">var =</span> <span class="st">"MED"</span>, <span class="at">type =</span> <span class="st">"choro"</span>,</span>
+<span id="cb72-10"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">pal =</span> <span class="st">"Dark Mint"</span>,</span>
+<span id="cb72-11"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">breaks =</span> <span class="st">"quantile"</span>,</span>
+<span id="cb72-12"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">nbreaks =</span> <span class="dv">6</span>,</span>
+<span id="cb72-13"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_title =</span> <span class="st">"Median Income</span><span class="sc">\n</span><span class="st">(euros)"</span>,</span>
+<span id="cb72-14"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_val_rnd =</span> <span class="sc">-</span><span class="dv">2</span>,</span>
+<span id="cb72-15"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb72-16"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-17"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_on</span>(<span class="at">x =</span> <span class="st">"worldmap"</span>, <span class="at">pos =</span> <span class="st">"right"</span>)</span>
+<span id="cb72-18"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-19"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_worldmap</span>(mtq, <span class="at">col =</span> <span class="st">"#0E3F5C"</span>)</span>
+<span id="cb72-20"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-21"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_off</span>()</span>
+<span id="cb72-22"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-23"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Wealth in Martinique, 2015"</span>)</span>
+<span id="cb72-24"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-25"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_credits</span>(<span class="st">"T. Giraud</span><span class="sc">\n</span><span class="st">Sources: INSEE &amp; IGN, 2018"</span>)</span>
+<span id="cb72-26"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-27"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_scale</span>(<span class="at">size =</span> <span class="dv">5</span>)</span>
+<span id="cb72-28"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-29"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_arrow</span>(<span class="st">"topleft"</span>)</span>
+<span id="cb72-30"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-31"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </small><p><small></small></p>
 </div><div class="column" style="width:60%;">
@@ -1709,9 +1722,9 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <section id="mapview-pour-lexploration" class="slide level2">
 <h2><code>mapview</code> pour l’exploration</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)</span>
-<span id="cb72-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mapview</span>(mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)</span>
+<span id="cb73-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mapview</span>(mtq)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 </p>
@@ -1725,12 +1738,12 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <div class="columns">
 <div class="column" style="width:&quot;50%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
-<span id="cb73-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb73-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"view"</span>)</span>
-<span id="cb73-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb73-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(mtq) <span class="sc">+</span></span>
-<span id="cb73-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">"STATUS"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb74-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"view"</span>)</span>
+<span id="cb74-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(mtq) <span class="sc">+</span></span>
+<span id="cb74-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_polygons</span>(<span class="at">fill =</span> <span class="st">"STATUS"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:&quot;50%;">
 <div class="cell" data-layout-align="center">
@@ -1752,19 +1765,19 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <section id="couleurs-et-palettes" class="slide level2 scrollable">
 <h2>Couleurs et palettes</h2>
 <div class="columns">
-<div class="column" style="width:49%;">
+<div class="column" style="width:50%;">
 <p><strong>De nombreuses palettes sont disponibles en R-base :</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">hcl.pals</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">hcl.pals</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><img data-src="img/swatch-plot-1.svg"></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">hcl.colors</span>(<span class="dv">7</span>, <span class="st">"YlOrRd"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">hcl.colors</span>(<span class="dv">7</span>, <span class="st">"YlOrRd"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "#7D0025" "#BE1D00" "#EB5500" "#F39300" "#F7C252" "#FCE7A0" "#FFFFC8"</code></pre>
 </div>
 </div>
-</div><div class="column" style="width:2%;">
+</div><div class="column" style="width:1%;">
 
 </div><div class="column" style="width:49%;">
 <p>Sinon, près de 70 packages proposent des palettes…</p>
@@ -1773,7 +1786,7 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <li><code>cols4all</code> <span class="citation" data-cites="R-cols4all">(<a href="#/bibliographie" role="doc-biblioref" onclick="">Tennekes, 2023</a>)</span> propose une app shiny :</li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="" aria-hidden="true" tabindex="-1"></a>cols4all<span class="sc">::</span><span class="fu">c4a_gui</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="" aria-hidden="true" tabindex="-1"></a>cols4all<span class="sc">::</span><span class="fu">c4a_gui</span>()</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><img data-src="img/cols4all.png"></p>
 </div></div>
@@ -1781,13 +1794,13 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 </p>
 <p>Il est également possible de <strong>construire sa palette personnalisée avec les codes couleur héxadécimaux :</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="" aria-hidden="true" tabindex="-1"></a>my_pal <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#7D0025"</span>, <span class="st">"#BE1D00"</span>, <span class="st">"#EB5500"</span>, <span class="st">"#F39300"</span>, <span class="st">"#F7C252"</span>, <span class="st">"#FCE7A0"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="" aria-hidden="true" tabindex="-1"></a>my_pal <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#7D0025"</span>, <span class="st">"#BE1D00"</span>, <span class="st">"#EB5500"</span>, <span class="st">"#F39300"</span>, <span class="st">"#F7C252"</span>, <span class="st">"#FCE7A0"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 </p>
 <p><strong>Certaines couleurs sont directement implementées dans R</strong> et peuvent être directement appelées par un nom :</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="" aria-hidden="true" tabindex="-1"></a>my_pal <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"red4"</span>, <span class="st">"red"</span>, <span class="st">"orange"</span>, <span class="st">"yellow"</span>, <span class="st">"#FFFFC8"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="" aria-hidden="true" tabindex="-1"></a>my_pal <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"red4"</span>, <span class="st">"red"</span>, <span class="st">"orange"</span>, <span class="st">"yellow"</span>, <span class="st">"#FFFFC8"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 </p>
@@ -1843,14 +1856,14 @@ coord. ref. : RGF93 v1 / Lambert-93 (EPSG:2154) </code></pre>
 <p><br>
 </p>
 <div class="cell" data-layout-align="center" data-warnings="false">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
-<span id="cb80-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb80-3"><a href="" aria-hidden="true" tabindex="-1"></a>pays <span class="ot">&lt;-</span> <span class="fu">ne_download</span>(<span class="at">scale =</span> <span class="dv">10</span>,</span>
-<span id="cb80-4"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">type =</span> <span class="st">"countries"</span>,</span>
-<span id="cb80-5"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">category =</span> <span class="st">"cultural"</span>,</span>
-<span id="cb80-6"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">destdir =</span> <span class="fu">tempdir</span>(),</span>
-<span id="cb80-7"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">load =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb80-8"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">returnclass =</span> <span class="st">"sf"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
+<span id="cb81-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-3"><a href="" aria-hidden="true" tabindex="-1"></a>pays <span class="ot">&lt;-</span> <span class="fu">ne_download</span>(<span class="at">scale =</span> <span class="dv">10</span>,</span>
+<span id="cb81-4"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">type =</span> <span class="st">"countries"</span>,</span>
+<span id="cb81-5"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">category =</span> <span class="st">"cultural"</span>,</span>
+<span id="cb81-6"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">destdir =</span> <span class="fu">tempdir</span>(),</span>
+<span id="cb81-7"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">load =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb81-8"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">returnclass =</span> <span class="st">"sf"</span>)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `ne_10m_admin_0_countries' from data source 
   `C:\Users\HP\AppData\Local\Temp\Rtmp6xPm5q\ne_10m_admin_0_countries.shp' 
@@ -1865,7 +1878,7 @@ Geodetic CRS:  WGS 84</code></pre>
 <p><br>
 </p>
 <div class="cell" data-layout-align="center" data-warnings="false">
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(pays) </span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(pays) </span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1881,18 +1894,18 @@ Geodetic CRS:  WGS 84</code></pre>
 <a href="https://gadm.org/" class="uri">https://gadm.org/</a><br>
 </p>
 <div class="cell" data-layout-align="center" data-warnings="false">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(geodata)</span>
-<span id="cb83-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-3"><a href="" aria-hidden="true" tabindex="-1"></a>sen <span class="ot">&lt;-</span> <span class="fu">gadm</span>(<span class="at">country=</span><span class="st">"senegal"</span>, </span>
-<span id="cb83-4"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">level=</span><span class="dv">3</span>,</span>
-<span id="cb83-5"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">version=</span><span class="st">"latest"</span>, </span>
-<span id="cb83-6"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">resolution=</span><span class="dv">2</span>,</span>
-<span id="cb83-7"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">path=</span><span class="fu">tempdir</span>())</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(geodata)</span>
+<span id="cb84-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-3"><a href="" aria-hidden="true" tabindex="-1"></a>sen <span class="ot">&lt;-</span> <span class="fu">gadm</span>(<span class="at">country=</span><span class="st">"senegal"</span>, </span>
+<span id="cb84-4"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">level=</span><span class="dv">3</span>,</span>
+<span id="cb84-5"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">version=</span><span class="st">"latest"</span>, </span>
+<span id="cb84-6"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">resolution=</span><span class="dv">2</span>,</span>
+<span id="cb84-7"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">path=</span><span class="fu">tempdir</span>())</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br>
 </p>
 <div class="cell" data-layout-align="center" data-warnings="false">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sen)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sen)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1912,19 +1925,19 @@ Geodetic CRS:  WGS 84</code></pre>
 <p><img data-src="img/logo_maptiles.png"> Le package <code>maptiles</code> <span class="citation" data-cites="R-maptiles">(<a href="#/bibliographie" role="doc-biblioref" onclick="">Giraud, 2023</a>)</span> permet de télécharger des fonds de carte (raster).</p>
 </div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb85" data-code-line-numbers="1,6-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href=""></a><span class="fu">library</span>(maptiles)</span>
-<span id="cb85-2"><a href=""></a></span>
-<span id="cb85-3"><a href=""></a>bbox <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">ext</span>(<span class="fu">c</span>(<span class="at">xmin =</span> <span class="fl">4.795</span>, <span class="at">xmax =</span> <span class="fl">4.825</span>,</span>
-<span id="cb85-4"><a href=""></a>                     <span class="at">ymin =</span> <span class="fl">43.94</span>, <span class="at">ymax =</span> <span class="fl">43.955</span>))</span>
-<span id="cb85-5"><a href=""></a></span>
-<span id="cb85-6"><a href=""></a>tiles <span class="ot">&lt;-</span> <span class="fu">get_tiles</span>(<span class="at">x =</span> bbox, </span>
-<span id="cb85-7"><a href=""></a>                   <span class="at">provider =</span> <span class="st">"OpenStreetMap"</span>,</span>
-<span id="cb85-8"><a href=""></a>                   <span class="at">project =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb85-9"><a href=""></a>                   <span class="at">crop =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb85-10"><a href=""></a>                   <span class="at">zoom =</span> <span class="dv">15</span>, </span>
-<span id="cb85-11"><a href=""></a>                   <span class="at">cachedir =</span> <span class="st">"cache"</span>)</span>
-<span id="cb85-12"><a href=""></a></span>
-<span id="cb85-13"><a href=""></a><span class="fu">plot</span>(tiles)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb86" data-code-line-numbers="1,6-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href=""></a><span class="fu">library</span>(maptiles)</span>
+<span id="cb86-2"><a href=""></a></span>
+<span id="cb86-3"><a href=""></a>bbox <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">ext</span>(<span class="fu">c</span>(<span class="at">xmin =</span> <span class="fl">4.795</span>, <span class="at">xmax =</span> <span class="fl">4.825</span>,</span>
+<span id="cb86-4"><a href=""></a>                     <span class="at">ymin =</span> <span class="fl">43.94</span>, <span class="at">ymax =</span> <span class="fl">43.955</span>))</span>
+<span id="cb86-5"><a href=""></a></span>
+<span id="cb86-6"><a href=""></a>tiles <span class="ot">&lt;-</span> <span class="fu">get_tiles</span>(<span class="at">x =</span> bbox, </span>
+<span id="cb86-7"><a href=""></a>                   <span class="at">provider =</span> <span class="st">"OpenStreetMap"</span>,</span>
+<span id="cb86-8"><a href=""></a>                   <span class="at">project =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb86-9"><a href=""></a>                   <span class="at">crop =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb86-10"><a href=""></a>                   <span class="at">zoom =</span> <span class="dv">15</span>, </span>
+<span id="cb86-11"><a href=""></a>                   <span class="at">cachedir =</span> <span class="st">"cache"</span>)</span>
+<span id="cb86-12"><a href=""></a></span>
+<span id="cb86-13"><a href=""></a><span class="fu">plot</span>(tiles)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -1961,10 +1974,10 @@ Geodetic CRS:  WGS 84</code></pre>
 <p>Le package <code>tidygeocoder</code> <span class="citation" data-cites="R-tidygeocoder">(<a href="#/bibliographie" role="doc-biblioref" onclick="">Cambon et al., 2021</a>)</span> permet d’utiliser <a href="https://jessecambon.github.io/tidygeocoder/articles/geocoder_services.html">un grand nombre de services de géocodage en ligne</a>.</p>
 </div><div class="column" style="width:80%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidygeocoder)</span>
-<span id="cb86-2"><a href="" aria-hidden="true" tabindex="-1"></a>EHESS <span class="ot">&lt;-</span> <span class="fu">geo</span>(<span class="st">"54 boulevard Raspail, 75006 Paris, FRANCE"</span>)</span>
-<span id="cb86-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-4"><a href="" aria-hidden="true" tabindex="-1"></a>EHESS</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidygeocoder)</span>
+<span id="cb87-2"><a href="" aria-hidden="true" tabindex="-1"></a>EHESS <span class="ot">&lt;-</span> <span class="fu">geo</span>(<span class="st">"54 boulevard Raspail, 75006 Paris, FRANCE"</span>)</span>
+<span id="cb87-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-4"><a href="" aria-hidden="true" tabindex="-1"></a>EHESS</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
   address                                     lat  long
@@ -1975,12 +1988,12 @@ Geodetic CRS:  WGS 84</code></pre>
 <p><br>
 </p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="" aria-hidden="true" tabindex="-1"></a>EHESS_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(EHESS, </span>
-<span id="cb88-2"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"long"</span>, <span class="st">"lat"</span>), </span>
-<span id="cb88-3"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="at">crs =</span> <span class="st">"EPSG:4326"</span>) </span>
-<span id="cb88-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)  </span>
-<span id="cb88-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mapview</span>(EHESS_sf)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="" aria-hidden="true" tabindex="-1"></a>EHESS_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(EHESS, </span>
+<span id="cb89-2"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"long"</span>, <span class="st">"lat"</span>), </span>
+<span id="cb89-3"><a href="" aria-hidden="true" tabindex="-1"></a>                     <span class="at">crs =</span> <span class="st">"EPSG:4326"</span>) </span>
+<span id="cb89-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview)  </span>
+<span id="cb89-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mapview</span>(EHESS_sf)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="leaflet html-widget html-fill-item" id="htmlwidget-fee68e63439f2ea39484" style="width:960px;height:480px;"></div>
 <script type="application/json" data-for="htmlwidget-fee68e63439f2ea39484">{"x":{"options":{"minZoom":1,"maxZoom":52,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"createMapPane","args":["point",440]},{"method":"addCircleMarkers","args":[48.8502313,2.326797041094853,6,null,"EHESS_sf",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"point","stroke":true,"color":"#333333","weight":1,"opacity":0.9,"fill":true,"fillColor":"#6666FF","fillOpacity":0.6},null,null,"<div class='scrollableContainer'><table class=mapview-popup id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>1&emsp;<\/td><\/tr><tr><td>1<\/td><th>address&emsp;<\/th><td>54 boulevard Raspail, 75006 Paris, FRANCE&emsp;<\/td><\/tr><tr><td>2<\/td><th>geometry&emsp;<\/th><td>sfc_POINT&emsp;<\/td><\/tr><\/table><\/div>",{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},"54 boulevard Raspail, 75006 Paris, FRANCE",{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addHomeButton","args":[2.326797041094853,48.8502313,2.326797041094853,48.8502313,true,"EHESS_sf","Zoom to EHESS_sf","<strong> EHESS_sf <\/strong>","bottomright"]},{"method":"addLayersControl","args":[["CartoDB.Positron","CartoDB.DarkMatter","OpenStreetMap","Esri.WorldImagery","OpenTopoMap"],"EHESS_sf",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"addLegend","args":[{"colors":["#6666FF"],"labels":["54 boulevard Raspail, 75006 Paris, FRANCE"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"factor","title":"","extra":null,"layerId":null,"className":"info legend","group":"EHESS_sf"}]}],"limits":{"lat":[48.8502313,48.8502313],"lng":[2.326797041094853,2.326797041094853]},"setView":[[48.8502313,2.326797041094853],18,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
@@ -2034,11 +2047,11 @@ Nous utilisons le <a href="https://wiki.openstreetmap.org/wiki">système de clef
 
 </div><div class="column" style="width:73%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(osmdata)</span>
-<span id="cb89-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb89-3"><a href="" aria-hidden="true" tabindex="-1"></a>bbox_avignon <span class="ot">&lt;-</span> <span class="fu">getbb</span>(<span class="st">"Avignon, Quartier Centre"</span>)</span>
-<span id="cb89-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb89-5"><a href="" aria-hidden="true" tabindex="-1"></a>bbox_avignon </span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(osmdata)</span>
+<span id="cb90-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-3"><a href="" aria-hidden="true" tabindex="-1"></a>bbox_avignon <span class="ot">&lt;-</span> <span class="fu">getbb</span>(<span class="st">"Avignon, Quartier Centre"</span>)</span>
+<span id="cb90-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-5"><a href="" aria-hidden="true" tabindex="-1"></a>bbox_avignon </span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        min       max
 x  4.797571  4.819687
@@ -2048,17 +2061,17 @@ y 43.942354 43.953799</code></pre>
 <p><br>
 </p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Emprise et type de données à extraire</span></span>
-<span id="cb91-2"><a href="" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">opq</span>(<span class="at">bbox =</span> bbox_avignon, <span class="at">osm_types =</span> <span class="st">"node"</span>)</span>
-<span id="cb91-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb91-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraction des restaurants</span></span>
-<span id="cb91-5"><a href="" aria-hidden="true" tabindex="-1"></a>req <span class="ot">&lt;-</span> <span class="fu">add_osm_feature</span>(<span class="at">opq =</span> q, <span class="at">key =</span> <span class="st">'amenity'</span>, <span class="at">value =</span> <span class="st">"restaurant"</span>)</span>
-<span id="cb91-6"><a href="" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">osmdata_sf</span>(req)</span>
-<span id="cb91-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb91-8"><a href="" aria-hidden="true" tabindex="-1"></a>resto <span class="ot">&lt;-</span> res<span class="sc">$</span>osm_points</span>
-<span id="cb91-9"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb91-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Affichage des points extraits</span></span>
-<span id="cb91-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(resto)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Emprise et type de données à extraire</span></span>
+<span id="cb92-2"><a href="" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">opq</span>(<span class="at">bbox =</span> bbox_avignon, <span class="at">osm_types =</span> <span class="st">"node"</span>)</span>
+<span id="cb92-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraction des restaurants</span></span>
+<span id="cb92-5"><a href="" aria-hidden="true" tabindex="-1"></a>req <span class="ot">&lt;-</span> <span class="fu">add_osm_feature</span>(<span class="at">opq =</span> q, <span class="at">key =</span> <span class="st">'amenity'</span>, <span class="at">value =</span> <span class="st">"restaurant"</span>)</span>
+<span id="cb92-6"><a href="" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">osmdata_sf</span>(req)</span>
+<span id="cb92-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-8"><a href="" aria-hidden="true" tabindex="-1"></a>resto <span class="ot">&lt;-</span> res<span class="sc">$</span>osm_points</span>
+<span id="cb92-9"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Affichage des points extraits</span></span>
+<span id="cb92-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(resto)</span></code><button title="Copier vers le presse-papier" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -2177,8 +2190,8 @@ y 43.942354 43.953799</code></pre>
 <!--     data](https://link.springer.com/article/10.1007/s10109-020-00336-0) -->
 <!--     [@bivand2021] -->
 </section></section>
-<section id="exercice-pratique" class="title-slide slide level1 center">
-<h1>Exercice pratique</h1>
+<section id="démonstration" class="title-slide slide level1 center">
+<h1>Démonstration</h1>
 <p><br>
 </p>
 <div class="center bigbis2">
