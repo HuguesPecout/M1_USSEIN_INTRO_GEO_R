@@ -1367,12 +1367,12 @@ mf_map(iso_dens, var="isomin",
 
 \
 
-<del>Trois</del><ins>**Deux**</ins> packages de référence.
+Trois packages de référence.
 
 :::::: columns
 ::: {.column width="29%"}
 <center>![](img/logo_ggplot2.png){width="240px"}\
-<s>`ggplot2` + `ggspatial`</s> [@R-ggspatial]</center>
+`ggplot2` + `ggspatial` [@R-ggspatial]</center>
 :::
 
 ::: {.column width="35%"}
