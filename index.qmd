@@ -50,25 +50,6 @@ editor:
     wrap: 72
 ---
 
-## Hugues Pecout
-
-Ingénieur en science de l'information géographique au CNRS depuis 2012
-
-A l'UMR Géographie-cités depusi 2022. Aide les chercheurs en Géographie pour le traitement de l'information géographique
-
-Tout types de données
-
-Formation Géomatique classique. Utilisation d'outils SIG clic boutton
-
-Spécialisation dans l'utilisation de R 
-
-
-
-## Pourquoi R
-
-## R vs Python
-
-
 # Le langage R et l'information spatiale
 
 ## Historique du langage R
@@ -103,7 +84,6 @@ statistique**.
 R est aujourd'hui un **langage très polyvalent**, qui propose des
 fonctionnalités qui vont au delà de l'analyse statistique... **Que
 propose R pour la manipulation de données spatiales ?**
-
 
 ## Croissance des fonctionnalités
 
@@ -213,9 +193,7 @@ ggsave(p, filename = "img/graph.png", bg = "transparent", dpi = 300)
 [CRAN](https://cran.r-project.org/)**
 :::
 
-
 ![](img/graph.png)
-
 
 ## R et l'information géographique
 
@@ -239,13 +217,12 @@ ggsave(p, filename = "img/graph.png", bg = "transparent", dpi = 300)
 Aujourd'hui, **R est en capacité de se substituer aux logiciels SIG**
 :::
 
-
 ## Le socle de l'écosystème
 
 \
 
-::: columns
-::: {.column width="40%"}
+:::::: columns
+:::: {.column width="40%"}
 Des bibliothèques géographiques largement utilisées :
 
 -   **GDAL** - Geospatial Data Abstraction Library [@GDAL]
@@ -258,28 +235,25 @@ Des bibliothèques géographiques largement utilisées :
 
 Envisager la conteneurisation [@nust2021].
 :::
-:::
+::::
 
 ::: {.column .center width="60%"}
 ![@pebesma2023 [chap. 1.7]](img/sf_deps.png)
 :::
-:::
-
-
-
+::::::
 
 # Manipulation de données vectorielles avec R
 
 ## Le package `sf` {.nostretch}
 
-::: columns
+:::::: columns
 ::: {.column width="75%"}
 Publié fin 2016 par Edzer Pebesma.
 
 ![© Allison Horst, 2018](img/sf_nice.jpg)
 :::
 
-::: {.column width="25%"}
+:::: {.column width="25%"}
 ![](img/logo_sf.gif)
 
 ::: txt2
@@ -295,8 +269,8 @@ Publié fin 2016 par Edzer Pebesma.
     (`|>` ou `%>%`)
 -   compatibilité avec les opérateurs du `tidyverse`.
 :::
-:::
-:::
+::::
+::::::
 
 ```{r knit_init}
 #| include: false
@@ -410,7 +384,7 @@ mtq_2154 <- st_transform(mtq, crs = "EPSG:2154")
 
 \
 
-::: columns
+::::: columns
 ::: {.column .center width="50%"}
 [**mtq** (WGS 84 / UTM zone 20N)]{.colour}
 
@@ -433,13 +407,13 @@ mf_map(mtq)
 mf_map(mtq_2154)
 ```
 :::
-:::
+:::::
 
 ## Séléction par attribut
 
 \
 
-::: columns
+:::::: columns
 ::: {.column .center width="45%"}
 ```{r sf_select}
 #| warning: false
@@ -468,7 +442,7 @@ plot(st_geometry(mtq))
 plot(st_geometry(mtq_sel), col = "red", add = TRUE)
 ```
 :::
-:::
+::::::
 
 ## Extraction centroïdes
 
@@ -537,7 +511,7 @@ plot(st_geometry(mtq_union), add = TRUE)
 
 \
 
-::: columns
+:::::: columns
 ::: {.column width="50%"}
 ```{r sf_interse0}
 #| echo: false
@@ -583,13 +557,13 @@ text(719127,1641586, "p", pos = 4, cex = 3)
 plot(st_geometry(mtq_z))
 ```
 :::
-:::
+::::::
 
 ## Séléction spatiale {.scrollable}
 
 \
 
-::: columns
+:::::: columns
 ::: {.column .center width="55%"}
 ```{r sf_filter}
 #| warning: false
@@ -624,11 +598,11 @@ plot(st_geometry(mtq))
 plot(st_geometry(SelSpa), col = "red", add = TRUE)
 ```
 :::
-:::
+::::::
 
 \
 
-::: columns
+:::::: columns
 ::: {.column .center width="55%"}
 ```{r sf_filter_bis}
 #| warning: false
@@ -663,13 +637,13 @@ plot(st_geometry(mtq))
 plot(st_geometry(SelSpa2), col = "red", add = TRUE)
 ```
 :::
-:::
+::::::
 
 ## Mesures
 
 \
 
-::: columns
+:::::: columns
 ::: {.column .center width="45%"}
 ```{r sf_mesure}
 #| warning: false
@@ -716,11 +690,11 @@ colnames(mat_dist) <- mtq_centroid$INSEE_COM
 mat_dist[1:4, 1:4]
 ```
 :::
-:::
+::::::
 
 ## Grille régulière {.scrollable}
 
-::: columns
+:::::: columns
 ::: {.column .center width="54%"}
 Construction d'une grille régulière
 
@@ -763,10 +737,8 @@ mtq_grid50$nb_centroid <- lengths(inter)
 # Affichage
 plot(mtq_grid50["nb_centroid"])
 ```
-
-
 :::
-:::
+::::::
 
 ## Jointure spatiale {.scrollable}
 
@@ -804,7 +776,7 @@ plot(grid_centroid["STATUS"])
 
 Les fonctions `sf` peuvent être utilisées avec le(s) pipe(s).
 
-::: columns
+:::::: columns
 ::: {.column .center width="50%"}
 ```{r sf_voronoix}
 #| nomar: true
@@ -860,13 +832,13 @@ plot(st_geometry(mtq_centroid),
 
 ```
 :::
-:::
+::::::
 
 # Manipulation de données RASTER avec R
 
 ## Le package `terra`
 
-::: columns
+:::::: columns
 ::: {.column width="73%"}
 Le package `terra` permet de gérer des données vectorielles et surtout
 **raster**.
@@ -876,7 +848,7 @@ Il succède au package `raster` [@R-raster] du même auteur.
 ![[rspatial.org](https://rspatial.org/rs/2-exploration.html#single-band-and-composite-maps)](img/terra-multi.png)
 :::
 
-::: {.column width="27%"}
+:::: {.column width="27%"}
 ![](img/logo_terra.png)
 
 ::: txt2
@@ -888,8 +860,8 @@ Il succède au package `raster` [@R-raster] du même auteur.
 -   Algèbre spatial (opérations locales, focales, globales, zonales)
 -   Transformation et conversion (rasterisation, vectorisation)
 :::
-:::
-:::
+::::
+::::::
 
 ## Import de données
 
@@ -905,7 +877,7 @@ library(terra)
 
 \
 
-::: columns
+:::::: columns
 ::: {.column .center width="45%"}
 **Données RASTER (`SpatRaster`)**
 
@@ -932,13 +904,13 @@ com <- vect("data/com46.gpkg", layer="com")
 com
 ```
 :::
-:::
+::::::
 
 ## Affichage
 
 \
 
-::: columns
+:::::: columns
 ::: {.column .center width="45%"}
 **Données RASTER**
 
@@ -965,7 +937,7 @@ com <- vect("data/com46.gpkg", layer="com")
 plot(com)
 ```
 :::
-:::
+::::::
 
 ## Reprojection
 
@@ -978,7 +950,7 @@ alt_2154 <- project(x = alt_raw, y = "EPSG:2154", method = "bilinear")
 
 \
 
-::: columns
+::::: columns
 ::: {.column .center width="50%"}
 [**alt_raw** (WGS 84)]{.colour}
 
@@ -998,11 +970,11 @@ plot(alt_raw)
 plot(alt_2154)
 ```
 :::
-:::
+:::::
 
 ## Crop & mask
 
-::: columns
+:::::: columns
 ::: {.column .center width="49%"}
 ```{r crop-terra}
 #| cache: false
@@ -1035,7 +1007,7 @@ plot(alt_mask)
 plot(cahors, add=TRUE)
 ```
 :::
-:::
+::::::
 
 ## Fusion de raster {.scrollable}
 
@@ -1058,7 +1030,6 @@ plot(cahors, add = TRUE)
 
 ```
 
-
 ```{r set_chunk}
 #| echo: false
 par(mfrow=c(1,1))
@@ -1066,16 +1037,12 @@ par(mfrow=c(1,1))
 
 \
 
-<center>
-**Deux possibilités :**
-</center>
+<center>**Deux possibilités :**</center>
 
 \
 
-:::columns
-
-:::{.column width=50%}
-
+::::: columns
+::: {.column width="50%"}
 ```{r fusion2_terra}
 #| code-line-numbers: 1-2
 # merge_raster <- merge(crop_cahors, 
@@ -1085,11 +1052,9 @@ par(mfrow=c(1,1))
 # plot(bellefont, add = TRUE)
 # plot(cahors, add = TRUE)
 ```
-
 :::
 
-:::{.column width=50%}
-
+::: {.column width="50%"}
 ```{r fusion3_terra}
 #| code-line-numbers: 1-2
 # mosaic_raster <- mosaic(crop_cahors, 
@@ -1099,17 +1064,13 @@ par(mfrow=c(1,1))
 # plot(bellefont, add = TRUE)
 # plot(cahors, add = TRUE)
 ```
-
 :::
-
-:::
+:::::
 
 ## Extract {.scrollable}
 
-::: columns
-
+:::::: columns
 ::: {.column width="49%"}
-
 Extraction en fonction d'une couche vectorielle.
 
 ```{r extract_terra}
@@ -1120,15 +1081,12 @@ stat_by_com <- extract(alt_2154,
 
 head(stat_by_com)
 ```
-
 :::
 
 ::: {.column width="2%"}
-
 :::
 
 ::: {.column width="49%"}
-
 Cartographie des résultats.
 
 ```{r extract_terra2}
@@ -1139,10 +1097,8 @@ com$alt_mean <- stat_by_com[,-1]
 plot(com, "alt_mean", 
      col=terrain.colors(5))
 ```
-
 :::
-
-:::
+::::::
 
 ## Agrégation & désagrégation {.scrollable}
 
@@ -1154,7 +1110,9 @@ res(alt_2154)
 
 \
 
-Créer une grille de même étendue, puis en diminuer la résolution spatiale (plus grosses cellules)
+Créer une grille de même étendue, puis en diminuer la résolution
+spatiale (plus grosses cellules)
+
 ```{r}
 alt_lower_model  <- alt_2154
 
@@ -1167,7 +1125,9 @@ alt_lower_model
 
 \
 
-La fonction resample() permet de ré-échantillonner les valeurs de départ dans la nouvelle résolution spatiale. Plusieurs méthodes de ré-échantillonnage sont disponibles 
+La fonction resample() permet de ré-échantillonner les valeurs de départ
+dans la nouvelle résolution spatiale. Plusieurs méthodes de
+ré-échantillonnage sont disponibles
 
 ```{r}
 alt_lower <- resample(x = alt_2154,
@@ -1183,7 +1143,6 @@ plot(alt_lower,
      main = "cellsize = 1000m - ré-échantillonnage bilinéaire")
 ```
 
-
 ## Algèbre spatiale
 
 ![](images/lo_fo_zo_glo-01.png)
@@ -1191,29 +1150,24 @@ plot(alt_lower,
 \
 \
 
-:::{.bigquat}
-<center>
-[Algèbre spatiale avec `Terra` &rarr; [Géomatique avec R](https://rcarto.github.io/geomatique_avec_r/09_package_terra.html)]{.bigbis}
-</center>
+::: bigquat
+<center>[Algèbre spatiale avec `Terra` → [Géomatique avec
+R](https://rcarto.github.io/geomatique_avec_r/09_package_terra.html)]{.bigbis}</center>
 :::
-
 
 # Pour aller plus loin...
 
-
 ## Conversion d'un objet spatial
 
-Pour profiter des fonctionnalités offertes par les différents packages de manipulation et d'analyse de données spatiales, il est fréquement nécessaire de convertir le type d'objet spatial utilisé.
+Pour profiter des fonctionnalités offertes par les différents packages
+de manipulation et d'analyse de données spatiales, il est fréquement
+nécessaire de convertir le type d'objet spatial utilisé.
 
 \
 
-:::columns
-
-:::{.column width="49%"}
-
-<center>
-**Objet `sf` &rarr; objet `SpatVector`**
-</center>
+:::::: columns
+::: {.column width="49%"}
+<center>**Objet `sf` → objet `SpatVector`**</center>
 
 \
 
@@ -1223,20 +1177,13 @@ mtq_terra <- vect(mtq)
 
 plot(mtq_terra)
 ```
-
-
-
 :::
 
-:::{.column width="2%"}
-
+::: {.column width="2%"}
 :::
 
-:::{.column width="49%"}
-
-<center>
-**Objet `SpatVector` &rarr; objet `sf`**
-</center>
+::: {.column width="49%"}
+<center>**Objet `SpatVector` → objet `sf`**</center>
 
 \
 
@@ -1246,17 +1193,13 @@ mtq_sf <- st_as_sf(mtq_terra)
 
 plot(st_geometry(mtq_sf))
 ```
-
-
 :::
-
-:::
+::::::
 
 ## Analyse & statistique spatiale {.scrollable}
 
-::: columns
-::: {.column width="55%"}
-
+:::::: columns
+::: {.column width="56%"}
 Différents packages pour l'analyse ou la statistique spatiale :
 
 -   `spatstat` : Analyse statistique de semis de points
@@ -1286,19 +1229,11 @@ semis_points <-  bbox_avignon |>
   _$osm_points |>
   st_transform("EPSG:3857")
 ```
-
 :::
 
-::: {.column width="1%"}
-
-:::
 
 ::: {.column width="44%"}
-
-
-<center>
-**Semis de points**
-</center>
+<center>**Semis de points**</center>
 
 ```{r}
 #| fig-height: 8
@@ -1307,26 +1242,25 @@ semis_points <-  bbox_avignon |>
 library(mapsf)
 mf_map(semis_points, cex = 2)
 ```
-
 :::
-:::
+::::::
 
 \
 
 <center>
+
 [**Exemple appliqué :**]{.bigbis}
 
 \
 
 **A. Densité d'un semis par la méthode de lissage par noyaux (KDE) :**
+
 </center>
 
 \
 
-:::columns
-
-:::{.column width="65%"}
-
+::::: columns
+::: {.column width="65%"}
 ```{r}
 #| cache: false
 #| message: false
@@ -1347,30 +1281,24 @@ ds <- density.ppp(x = p,
 ```
 :::
 
-:::{.column width="35%"}
+::: {.column width="35%"}
 ```{r}
 #| fig-height: 8
 plot(ds)
 
 ```
-
 :::
-
-:::
+:::::
 
 \
 
-<center>
-**B. Conversion de l'objet crée (`img`, package `spatstat`) en objet `SpatRaster` (package `terra`) :**
-</center>
+<center>**B. Conversion de l'objet crée (`img`, package `spatstat`) en
+objet `SpatRaster` (package `terra`) :**</center>
 
 \
 
-
-:::columns
-
-:::{.column width="65%"}
-
+::::: columns
+::: {.column width="65%"}
 ```{r}
 #| cache: false
 library(terra)
@@ -1382,35 +1310,27 @@ r <- rast(ds) * 100 * 100
 crs(r) <- st_crs(semis_points)$wkt
 
 ```
-
 :::
 
-:::{.column width="35%"}
-
+::: {.column width="35%"}
 ```{r}
 #| fig-height: 8
 
 plot(r)
 
 ```
-
 :::
-
-:::
+:::::
 
 \
 
-<center>
-**C. Transformation du Raster (`SpatRaster`) et polygone vectoriel (`sf`) :**
-</center>
+<center>**C. Transformation du Raster (`SpatRaster`) et polygone
+vectoriel (`sf`) :**</center>
 
 \
 
-
-:::columns
-
-:::{.column width="55%"}
-
+::::: columns
+::: {.column width="55%"}
 ```{r}
 #| cache: false
 #| warning: false
@@ -1427,11 +1347,9 @@ iso_dens <- mapiso(r, breaks = bks)
 iso_dens <- iso_dens[-1, ]
 
 ```
-
 :::
 
-:::{.column width="45%"}
-
+::: {.column width="45%"}
 ```{r}
 #| fig-height: 8
 #| warning: false
@@ -1440,13 +1358,8 @@ library(mapsf)
 mf_map(iso_dens, var="isomin", 
        type = "choro", nbreaks = 7)
 ```
-
 :::
-
-:::
-
-
-
+:::::
 
 # Cartographie avec R
 
@@ -1454,32 +1367,32 @@ mf_map(iso_dens, var="isomin",
 
 \
 
-**Trois packages** de référence. 
+<del>Trois</del><ins>**Deux**</ins> packages de référence.
 
-::: columns
-::: {.column width="33%"}
-![](img/logo_tmap.png){width="240px"}\
-`tmap` [@R-tmap]
-:::
-
-::: {.column width="33%"}
-![](img/logo_ggplot2.png){width="240px"}\
-`ggplot2` + `ggspatial` [@R-ggspatial]
+:::::: columns
+::: {.column width="29%"}
+<center>![](img/logo_ggplot2.png){width="240px"}\
+<s>`ggplot2` + `ggspatial`</s> [@R-ggspatial]</center>
 :::
 
-::: {.column width="33%"}
-![](img/logo_mapsf.png){width="240px"}\
-`mapsf` [@R-mapsf]
+::: {.column width="35%"}
+<center>![](img/logo_mapsf.png){width="240px"}\
+`mapsf` [@R-mapsf]</center>
 :::
+
+::: {.column width="35%"}
+<center>![](img/logo_tmap.png){width="240px"}\
+`tmap` [@R-tmap]</center>
+
 :::
+
+::::::
 
 \
 
-
-
 ## Le package `mapsf`
 
-::: columns
+::::::: columns
 ::: {.column width="25%"}
 ![](img/logo_mapsf.png)
 
@@ -1487,9 +1400,7 @@ Le package `mapsf` [@R-mapsf] remplace `cartography` [@R-cartography].
 
 \
 
-<center>
-**&rarr;** [**Site Web**](https://riatelab.github.io/mapsf/)
-</center>
+<center>**→** [**Site Web**](https://riatelab.github.io/mapsf/)</center>
 :::
 
 ::: {.column width="3%"}
@@ -1505,11 +1416,12 @@ Le package `mapsf` [@R-mapsf] remplace `cartography` [@R-cartography].
 -   Etiquettes
 
 <center>
-![[Download CheatSheet](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf)](img/mapsf_cheatsheet.png)
+
+![[Download
+CheatSheet](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf)](img/mapsf_cheatsheet.png)
+
 </center>
 :::
-
-
 
 ::: {.column width="35%"}
 `mf_map()` est la fonction principale.
@@ -1523,10 +1435,8 @@ mf_map(x = mtq,
        var = "STATUS", 
        type = "typo")
 ```
-
 :::
-
-:::
+:::::::
 
 ## Utilisation simple
 
@@ -1604,9 +1514,8 @@ mf_layout(
 
 ## Utilisation avancée
 
-::: columns
+::::: columns
 ::: {.column width="40%"}
-
 <small>
 
 ```{r mapsf_avance}
@@ -1651,36 +1560,28 @@ dev.off()
 ::: {.column width="60%"}
 ![](img/mtq.png){width="80%"}
 :::
-:::
+:::::
 
-
-<center>
-[Manuel d'utilisation du package `mapsf` &rarr; [Cartographie avec R](https://rcarto.github.io/geomatique_avec_r/09_package_terra.html)]{.bigbis}
-</center>
-
-
+<center>[Manuel d'utilisation du package `mapsf` → [Cartographie avec
+R](https://rcarto.github.io/geomatique_avec_r/09_package_terra.html)]{.bigbis}</center>
 
 ## Cartographie interactive
 
-::: columns
+:::::: columns
 ::: {.column .center width="48%"}
 ![](img/logo_leaflet.png){width="280px"}\
 `leaflet` [@R-leaflet], repose sur la bibliothèque JS leaflet
 
 \
 
-
 ![](img/logo_mapview.gif){width="240px"}\
 `mapview` [@R-mapview], repose sur le package `leaflet`
 :::
 
 ::: {.column width="4%"}
-
 :::
 
-
 ::: {.column .center width="48%"}
-
 ![](img/logo_tmap.png){width="180px"}
 
 `tmap` dispose d'un mode interactif (`leaflet`).
@@ -1691,7 +1592,7 @@ dev.off()
 `mapdeck` [@R-mapdeck], repose sur les bibliothèques JS Mapbox GL et
 Deck.gl
 :::
-:::
+::::::
 
 ## `mapview` pour l'exploration
 
@@ -1717,17 +1618,17 @@ mapview(mtq)
 \
 
 <center>
+
 <iframe src="html/map.html" width="500px" height="450px">
 
 </iframe>
+
 </center>
 
-## `tmap` pour la cartographie thématique 
+## `tmap` pour la cartographie thématique
 
-:::columns
-
-:::{.column width="50%}
-
+::::: columns
+::: {.column width="\"50%"}
 ```{r tmap_simple}
 #| eval: false
 #| echo: true
@@ -1741,11 +1642,9 @@ tm_shape(mtq) +
 tm_polygons(fill = "STATUS")
 
 ```
-
 :::
 
-:::{.column width="50%}
-
+::: {.column width="\"50%"}
 ```{r tmap_simple2}
 #| eval: true
 #| cache: false
@@ -1760,27 +1659,24 @@ tm_shape(mtq) +
 tm_polygons(fill = "STATUS")
 
 ```
-
 :::
-
-:::
+:::::
 
 ## `shiny` pour les applications
 
 <center>
+
 ![](img/cityguess.png){width="57%"}
 
 [rcarto.shinyapps.io/cityguess](https://rcarto.shinyapps.io/cityguess/)
 
 </center>
 
-
 ## Couleurs et palettes {.scrollable}
 
-::: columns
+:::::: columns
 ::: {.column width="49%"}
-**De nombreuses palettes sont disponibles en R-base :** 
-
+**De nombreuses palettes sont disponibles en R-base :**
 
 ```{r pal1}
 #| eval: false
@@ -1792,23 +1688,18 @@ hcl.pals()
 
 ![](img/swatch-plot-1.svg)
 
-
 ```{r pal2}
 #| eval: true
 #| echo: true
 
 hcl.colors(7, "YlOrRd")
 ```
-
-
 :::
 
 ::: {.column width="2%"}
-
 :::
 
 ::: {.column width="49%"}
-
 Sinon, près de 70 packages proposent des palettes...
 
 -   `paletteer` [@R-paletteer] combine 2587 palettes
@@ -1823,11 +1714,12 @@ cols4all::c4a_gui()
 
 ![](img/cols4all.png)
 :::
-:::
+::::::
 
 \
 
-Il est également possible de **construire sa palette personnalisée avec les codes couleur héxadécimaux :**
+Il est également possible de **construire sa palette personnalisée avec
+les codes couleur héxadécimaux :**
 
 ```{r pal4}
 #| eval: true
@@ -1838,8 +1730,8 @@ my_pal <- c("#7D0025", "#BE1D00", "#EB5500", "#F39300", "#F7C252", "#FCE7A0")
 
 \
 
-**Certaines couleurs sont directement implementées dans R** et peuvent être directement appelées par un nom :
-
+**Certaines couleurs sont directement implementées dans R** et peuvent
+être directement appelées par un nom :
 
 ```{r pal5}
 #| eval: true
@@ -1851,10 +1743,14 @@ my_pal <- c("red4", "red", "orange", "yellow", "#FFFFC8")
 \
 
 <center>
-Liste des couleurs implementées : [**http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf**](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
+
+Liste des couleurs implementées :
+[**http://www.stat.columbia.edu/\~tzheng/files/Rcolor.pdf**](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
 
 <!-- ```{=html} -->
+
 <!-- <iframe width="800" height="700" src="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" title="Quarto Documentation"></iframe> -->
+
 <!-- ``` -->
 
 </center>
@@ -1864,12 +1760,12 @@ Liste des couleurs implementées : [**http://www.stat.columbia.edu/~tzheng/files
 
 # Acquisition de données
 
-
 ## Télécharger des données spatiales {.scrollable}
 
-De nombreux packages API existent pour directement récupérer des données spatiales. Quelques exemples :
+De nombreux packages API existent pour directement récupérer des données
+spatiales. Quelques exemples :
 
-::: columns
+:::::: columns
 ::: {.column width="47%"}
 **Maillages administratifs** :\
 `rnaturalearth` pour les pays du monde\
@@ -1883,13 +1779,12 @@ De nombreux packages API existent pour directement récupérer des données spat
 `spocc`
 
 **Données diverses** :\
-`geodata` (climat, cultures, altitude, utilisation des terres, accessibilité, limites administratives, ect...)   
-
+`geodata` (climat, cultures, altitude, utilisation des terres,
+accessibilité, limites administratives, ect...)
 :::
 
 ::: {.column width="6%"}
-
-::: 
+:::
 
 ::: {.column width="47%"}
 **Données eco / socio / démographique** :\
@@ -1904,16 +1799,16 @@ De nombreux packages API existent pour directement récupérer des données spat
 `rgee` (Google Earth Engine)\
 `nasapower` (météo, climato)
 :::
-:::
+::::::
 
 \
 
 <center>
-[**Exemple `rnaturalearth` :**]{.bigbis}   
-[https://www.naturalearthdata.com/](https://www.naturalearthdata.com/)
+
+[**Exemple `rnaturalearth` :**]{.bigbis}\
+<https://www.naturalearthdata.com/>
 
 \
-
 
 ```{r acquisition}
 #| eval: true
@@ -1941,14 +1836,11 @@ mf_map(pays)
 
 ```
 
-
 \
 
-
-[**Exemple `geodata` - Données GADM :**]{.bigbis}   
-[https://github.com/rspatial/geodata](https://github.com/rspatial/geodata)   
-[https://gadm.org/](https://gadm.org/)
-\
+[**Exemple `geodata` - Données GADM :**]{.bigbis}\
+<https://github.com/rspatial/geodata>\
+<https://gadm.org/>\
 
 ```{r acquisition3}
 #| eval: true
@@ -1977,16 +1869,13 @@ plot(sen)
 
 ```
 
-
 \
-
 
 </center>
 
-
 ## Récupérer des tuiles (fond de carte Raster) {.nostretch}
 
-::: columns
+:::::::: columns
 ::: {.column width="20%"}
 ![](img/logo_maptiles.png) Le package `maptiles` [@R-maptiles] permet de
 télécharger des fonds de carte (raster).
@@ -2014,18 +1903,16 @@ plot(tiles)
 
 ```
 
-
 ![](img/tiles.png){width="350" height="243"}
 :::
 
 ::: {.column width="1%"}
 :::
 
-::: {.column width="20%"}
+:::: {.column width="20%"}
 **Alternatives :**
 
-
-:::{.soixantequinze}
+::: soixantequinze
 -   `ceramic`
 -   `ggmap` (pour `ggplot2`)
 -   `ggspatial` (pour `ggplot2`, utilise `rosm`)
@@ -2036,14 +1923,12 @@ plot(tiles)
 -   `rosm`
 -   …
 :::
-
-:::
-:::
+::::
+::::::::
 
 ## Géocoder des adresses {.scrollable}
 
-
-::: columns
+::::: columns
 ::: {.column width="20%"}
 ![](img/logo_tidygeocoder.png)
 
@@ -2078,24 +1963,26 @@ library(mapview)
 mapview(EHESS_sf)
 
 ```
-
 :::
-:::
+:::::
 
 ## Digitalisation
 
-Le package `mapedit` (Appelhans et al., 2020) permet de digitaliser des données vectorielles directement dans R. 
+Le package `mapedit` (Appelhans et al., 2020) permet de digitaliser des
+données vectorielles directement dans R.
 
 <center>
+
 ![](img/mapedit-leafpm-1.gif){width="60%"}
 
-**Privilégier les logiciels SIG classiques pour faire de la digitalisation !**
-</center>
+**Privilégier les logiciels SIG classiques pour faire de la
+digitalisation !**
 
+</center>
 
 ## OpenStreetMap
 
-::: columns
+:::::: columns
 ::: {.column width="20%"}
 ![](img/Openstreetmap_logo.svg.png) Une base de données cartographique
 libre et contributive.
@@ -2129,13 +2016,11 @@ libre et contributive.
 
 </iframe>
 :::
-:::
-
-
+::::::
 
 ## Acquisition données OSM {.scrollable}
 
-::: columns
+:::::: columns
 ::: {.column width="25%"}
 ![](img/logo_osmdata.png){width="70%"}
 
@@ -2147,7 +2032,6 @@ d'OSM](https://wiki.openstreetmap.org/wiki) pour construire la requête.
 :::
 
 ::: {.column width="2%"}
-
 :::
 
 ::: {.column width="73%"}
@@ -2185,95 +2069,91 @@ resto <- res$osm_points
 mf_map(resto)
 ```
 :::
-:::
-
+::::::
 
 # Ressources
 
 ## Geocomputation with R
 
-::: columns
+::::: columns
 ::: {.column width="40%"}
 ![](img/GeocomputationwithR.png)
 :::
 
 ::: {.column width="60%"}
-
 \
 
-{{< fa solid users >}} Robin Lovelace, Jakub Nowosad, Jannes Muenchow (2019)
+{{< fa solid users >}} Robin Lovelace, Jakub Nowosad, Jannes Muenchow
+(2019)
 
 {{< fa solid link >}} [r.geocompx.org](https://r.geocompx.org/)
 
 {{< fa solid plus >}} [Première partie traduite en
 français](https://r.geocompx.org/fr/)
 :::
-:::
+:::::
 
 ## Spatial Data Science with applications in R
 
-::: columns
+::::: columns
 ::: {.column width="40%"}
 ![](img/sdsr.jpg){width="100%"}
 :::
 
 ::: {.column width="60%"}
-
 \
 
 {{< fa solid users >}} Edzer Pebesma, Roger Bivand (2020)
 
 {{< fa solid link >}} [r-spatial.org/book](https://r-spatial.org/book/)
 :::
-:::
+:::::
 
 ## Spatial Data Science with R and `terra`
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 ![](img/sds.png)
 :::
 
 ::: {.column width="50%"}
-
 \
 
 {{< fa solid users >}} Robert J. Hijmans (2023)
 
 {{< fa solid link >}} [rspatial.org](https://rspatial.org/)
 :::
-:::
+:::::
 
 ## Cartographie et Géomatique avec R
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
-
 <center>
+
 ![](img/carto_avec_r.png)
 
-
-{{< fa solid link >}} [rcarto.github.io/cartographie_avec_r](https://rcarto.github.io/cartographie_avec_r/)
+{{< fa solid link >}}
+[rcarto.github.io/cartographie_avec_r](https://rcarto.github.io/cartographie_avec_r/)
 
 </center>
-
 :::
 
 ::: {.column width="50%"}
-
 <center>
+
 ![](img/geom_avec_r.png)
 
-
-{{< fa solid link >}} [rcarto.github.io/geomatique_avec_r](https://rcarto.github.io/geomatique_avec_r/)
+{{< fa solid link >}}
+[rcarto.github.io/geomatique_avec_r](https://rcarto.github.io/geomatique_avec_r/)
 
 </center>
 :::
-:::
+:::::
 
 ## Rzine.fr {.nostretch}
 
-::: columns
+:::::: columns
 ::: {.column width="28%"}
 ![](img/logo_rzine.png){width="90%"}
 
@@ -2283,88 +2163,86 @@ Revue d'article de méthodes mises en application avec R
 
 {{< fa solid link >}} [**rzine.fr**](https://rzine.fr/)
 
-{{< fa solid link >}} [**Liste de ressources**](https://rzine.gitpages.huma-num.fr/site/ressources/)
-
-
+{{< fa solid link >}} [**Liste de
+ressources**](https://rzine.gitpages.huma-num.fr/site/ressources/)
 :::
 
 ::: {.column width="2%"}
 :::
 
 ::: {.column width="70%"}
+<center>***"Encourager la production et favoriser la diffusion de
+documentation sur la pratique de R en SHS"***</center>
 
-<center>
-***"Encourager la production et favoriser la diffusion de documentation sur la pratique de R en SHS"***
-</center>
-
-![](img/rzine.png){width="90%}
+![](img/rzine.png){width="\"90%"}
 :::
-
-
-:::
+::::::
 
 ## Groupe ElementR
 
-::: columns
-::: {.column width="31%"}
+::::::: columns
+:::: {.column width="31%"}
 ![](img/logo_elementr.png){width="80%"}
 
-{{< fa solid link >}} [https://elementr.netlify.app/](https://elementr.netlify.app/)
+{{< fa solid link >}} <https://elementr.netlify.app/>
 
 \
 
-:::{.soixantequinze}
-[ElementR](https://elementr.netlify.app/) est un groupe d'autoformation qui fédère trois unités de recherche en géographie : l'UMR Géographie-Cités, l'UMR PRODIG et l'UAR RIATE.\
+::: soixantequinze
+[ElementR](https://elementr.netlify.app/) est un groupe d'autoformation
+qui fédère trois unités de recherche en géographie : l'UMR
+Géographie-Cités, l'UMR PRODIG et l'UAR RIATE.\
 
 Ses activités sont accessibles à l'ensemble des membres du Campus
 Condorcet.
 :::
-
-:::
+::::
 
 ::: {.column width="1%"}
 :::
 
 ::: {.column width="68%"}
-
-<center>
-***"Pour le traitement de l’information géographique avec R"***
-</center>
+<center>***"Pour le traitement de l’information géographique avec
+R"***</center>
 
 ![](img/elementr.png)
 :::
-
-
-:::
+:::::::
 
 <!-- ## Ressources -->
 
 <!-- -   [CRAN Task View: Analysis of Spatial -->
-<!--     Data](https://cran.r-project.org/web/views/Spatial.html) -->
-<!-- -   [R Special Interest Group on using Geographical data and -->
-<!--     Mapping](https://stat.ethz.ch/mailman/listinfo/r-sig-geo) (mailing -->
-<!--     list) -->
-<!-- -   [r-spatial blog](https://www.r-spatial.org/) -->
-<!-- -   [Progress in the R ecosystem for representing and handling spatial -->
-<!--     data](https://link.springer.com/article/10.1007/s10109-020-00336-0) -->
-<!--     [@bivand2021] -->
 
+<!--     Data](https://cran.r-project.org/web/views/Spatial.html) -->
+
+<!-- -   [R Special Interest Group on using Geographical data and -->
+
+<!--     Mapping](https://stat.ethz.ch/mailman/listinfo/r-sig-geo) (mailing -->
+
+<!--     list) -->
+
+<!-- -   [r-spatial blog](https://www.r-spatial.org/) -->
+
+<!-- -   [Progress in the R ecosystem for representing and handling spatial -->
+
+<!--     data](https://link.springer.com/article/10.1007/s10109-020-00336-0) -->
+
+<!--     [@bivand2021] -->
 
 # Exercice pratique
 
 \
 
-:::{.center .bigbis2}
+::: {.center .bigbis2}
 [**https://github.com/HuguesPecout/DEMO_GEO_R**](https://github.com/HuguesPecout/DEMO_GEO_R)
 
 \
 
-[![](img/project.png){width="20%"}]()
+![](img/project.png){width="20%"}
 
-**Téléchargez ce** [**projet Rstudio**](https://github.com/HuguesPecout/DEMO_GEO_R/archive/refs/heads/main.zip)
-:::   
-
-
+**Téléchargez ce** [**projet
+Rstudio**](https://github.com/HuguesPecout/DEMO_GEO_R/archive/refs/heads/main.zip)
+:::
 
 # Merci de votre attention {style="text-align: center"}
 
@@ -2374,22 +2252,22 @@ Condorcet.
 \
 
 ::: {style="font-size: 1.5em; text-align: center"}
-{{< fa display >}} [Diaporama en ligne](https://huguespecout.github.io/M1_USSEIN_INTRO_GEO_R)
+{{< fa display >}} [Diaporama en
+ligne](https://huguespecout.github.io/M1_USSEIN_INTRO_GEO_R)
 
 \
 
-{{< fa code >}} [Code source](https://github.com/HuguesPecout/M1_USSEIN_INTRO_GEO_R)
+{{< fa code >}} [Code
+source](https://github.com/HuguesPecout/M1_USSEIN_INTRO_GEO_R)
 
 \
 
 ![](img/logo_by-sa.svg){width="10%"}\
 
 \
-
 :::
 
 ::: footer
-
 <img src="img/geographie.png" width="80" style="margin-right:50px"/><img src="img/cnrs.png" width="75"/>
 :::
 
